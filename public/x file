@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Screenshot</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #video {
+            border: 1px solid black;
+            width: 640px;
+            height: 480px;
+        }
+        canvas {
+            display: none;
+        }
+        #screenshot {
+            margin-top: 10px;
+            border: 1px solid black;
+            width: 640px;
+            height: 480px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <video id="video" autoplay></video>
+    <button id="capture">Take Screenshot</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <img id="screenshot" alt="Screenshot">
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const screenshot = document.getElementById('screenshot');
+        const captureButton = document.getElementById('capture');
+        const context = canvas.getContext('2d');
+
+        // Function to start the video stream
+        async function startVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing webcam:', err);
+            }
+        }
+
+        // Function to capture the screenshot
+        function captureScreenshot() {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            screenshot.src = canvas.toDataURL('image/png');
+        }
+
+        // Start the video stream when the page loads
+        startVideo();
+
+        // Add event listener to the capture button
+        captureButton.addEventListener('click', captureScreenshot);
+    </script>
+</body>
+</html>
