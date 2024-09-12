@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +35,9 @@
         .controls {
             margin-top: 10px;
         }
+        .controls input {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -38,6 +46,7 @@
         <video id="video" autoplay></video>
         <canvas id="canvas"></canvas>
         <div class="controls">
+            <input type="text" id="photoName" placeholder="Enter custom photo name" />
             <button id="capture">Capture Photo</button>
             <button id="startRecord">Start Recording</button>
             <button id="stopRecord" disabled>Stop Recording</button>
@@ -50,6 +59,7 @@
         const captureButton = document.getElementById('capture');
         const startRecordButton = document.getElementById('startRecord');
         const stopRecordButton = document.getElementById('stopRecord');
+        const photoNameInput = document.getElementById('photoName');
 
         let mediaStream = null;
         let mediaRecorder = null;
@@ -71,11 +81,16 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Get custom photo name from input
+            const customName = photoNameInput.value.trim();
+            const photoName = customName ? `${customName}_${String(photoCount).padStart(2, '0')}` : `my_pic${String(photoCount).padStart(2, '0')}`;
+            
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `my_pic${String(photoCount).padStart(2, '0')}.jpg`;
+                link.download = `${photoName}.jpg`;
                 link.click();
                 URL.revokeObjectURL(url);
                 photoCount++;
@@ -97,8 +112,9 @@
                 const blob = new Blob(recordedChunks, { type: 'video/webm' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
+                const videoName = `my_video${String(videoCount).padStart(2, '0')}`;
                 link.href = url;
-                link.download = `my_video${String(videoCount).padStart(2, '0')}.webm`;
+                link.download = `${videoName}.webm`;
                 link.click();
                 URL.revokeObjectURL(url);
                 videoCount++;
@@ -124,3 +140,4 @@
     </script>
 </body>
 </html>
+
