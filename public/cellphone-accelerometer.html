@@ -22,24 +22,39 @@
         <p>X Acceleration: <span id="xAccel">0</span> m/s²</p>
         <p>Y Acceleration: <span id="yAccel">0</span> m/s²</p>
         <p>Z Acceleration: <span id="zAccel">0</span> m/s²</p>
+        <p id="status"></p>
     </div>
 
     <script>
-        // Check if DeviceMotionEvent is supported
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', (event) => {
-                const x = event.accelerationIncludingGravity.x || 0;
-                const y = event.accelerationIncludingGravity.y || 0;
-                const z = event.accelerationIncludingGravity.z || 0;
+        // Function to handle device motion events
+        function handleMotion(event) {
+            const x = event.accelerationIncludingGravity.x || 0;
+            const y = event.accelerationIncludingGravity.y || 0;
+            const z = event.accelerationIncludingGravity.z || 0;
 
-                // Update the HTML elements with the acceleration data
-                document.getElementById('xAccel').textContent = x.toFixed(2);
-                document.getElementById('yAccel').textContent = y.toFixed(2);
-                document.getElementById('zAccel').textContent = z.toFixed(2);
-            });
-        } else {
-            document.getElementById('data').innerHTML = '<p>Your device does not support accelerometer data.</p>';
+            // Update the HTML elements with the acceleration data
+            document.getElementById('xAccel').textContent = x.toFixed(2);
+            document.getElementById('yAccel').textContent = y.toFixed(2);
+            document.getElementById('zAccel').textContent = z.toFixed(2);
         }
-    </script>
-</body>
-</html>
+
+        // Check for permissions and feature support
+        if (window.DeviceMotionEvent) {
+            // Request permission to access device motion events
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                // iOS 13+ requires permission request
+                DeviceMotionEvent.requestPermission().then(permissionState => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('devicemotion', handleMotion);
+                    } else {
+                        document.getElementById('status').textContent = 'Permission to access accelerometer was denied.';
+                    }
+                }).catch(error => {
+                    document.getElementById('status').textContent = 'Error requesting permission: ' + error.message;
+                });
+            } else {
+                // For non-iOS devices or older iOS versions
+                window.addEventListener('devicemotion', handleMotion);
+            }
+        } else {
+            document.getElementById('status').textContent = 'DeviceMotionEvent
