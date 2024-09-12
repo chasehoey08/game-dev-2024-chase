@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webcam Capture and Record</title>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         #video {
             display: block;
             width: 100%;
@@ -23,17 +33,15 @@
     </style>
 </head>
 <body>
-    <h1>Webcam Capture and Record</h1>
-    <video id="video" autoplay></video>
-    <canvas id="canvas"></canvas>
-    <div class="controls">
-        <button id="capture">Capture Photo</button>
-        <button id="startRecord">Start Recording</button>
-        <button id="stopRecord" disabled>Stop Recording</button>
-        <select id="saveLocation">
-            <option value="downloads">Downloads</option>
-            <option value="desktop">Desktop</option>
-        </select>
+    <div id="container">
+        <h1>Webcam Capture and Record</h1>
+        <video id="video" autoplay></video>
+        <canvas id="canvas"></canvas>
+        <div class="controls">
+            <button id="capture">Capture Photo</button>
+            <button id="startRecord">Start Recording</button>
+            <button id="stopRecord" disabled>Stop Recording</button>
+        </div>
     </div>
 
     <script>
@@ -42,11 +50,12 @@
         const captureButton = document.getElementById('capture');
         const startRecordButton = document.getElementById('startRecord');
         const stopRecordButton = document.getElementById('stopRecord');
-        const saveLocation = document.getElementById('saveLocation');
 
         let mediaStream = null;
         let mediaRecorder = null;
         let recordedChunks = [];
+        let photoCount = 1;
+        let videoCount = 1;
 
         async function setupCamera() {
             try {
@@ -66,13 +75,17 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'photo.jpg';
+                link.download = `my_pic${String(photoCount).padStart(2, '0')}.jpg`;
                 link.click();
                 URL.revokeObjectURL(url);
+                photoCount++;
             }, 'image/jpeg');
         }
 
         function startRecording() {
+            if (mediaRecorder) {
+                mediaRecorder.stop();  // Stop any ongoing recording
+            }
             recordedChunks = [];
             mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'video/webm' });
             mediaRecorder.ondataavailable = event => {
@@ -85,9 +98,10 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'recording.webm';
+                link.download = `my_video${String(videoCount).padStart(2, '0')}.webm`;
                 link.click();
                 URL.revokeObjectURL(url);
+                videoCount++;
             };
             mediaRecorder.start();
             startRecordButton.disabled = true;
@@ -95,9 +109,11 @@
         }
 
         function stopRecording() {
-            mediaRecorder.stop();
-            startRecordButton.disabled = false;
-            stopRecordButton.disabled = true;
+            if (mediaRecorder) {
+                mediaRecorder.stop();
+                startRecordButton.disabled = false;
+                stopRecordButton.disabled = true;
+            }
         }
 
         captureButton.addEventListener('click', capturePhoto);
