@@ -1,69 +1,110 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam Screenshot</title>
+    <title>Webcam Capture and Record</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
         #video {
-            border: 1px solid black;
-            width: 640px;
-            height: 480px;
+            display: block;
+            width: 100%;
+            max-width: 600px;
         }
-        canvas {
+        #canvas {
             display: none;
         }
-        #screenshot {
-            margin-top: 10px;
-            border: 1px solid black;
-            width: 640px;
-            height: 480px;
-        }
-        button {
+        .controls {
             margin-top: 10px;
         }
     </style>
 </head>
 <body>
+    <h1>Webcam Capture and Record</h1>
     <video id="video" autoplay></video>
-    <button id="capture">Take Screenshot</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <img id="screenshot" alt="Screenshot">
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+        <button id="capture">Capture Photo</button>
+        <button id="startRecord">Start Recording</button>
+        <button id="stopRecord" disabled>Stop Recording</button>
+        <select id="saveLocation">
+            <option value="downloads">Downloads</option>
+            <option value="desktop">Desktop</option>
+        </select>
+    </div>
 
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
-        const screenshot = document.getElementById('screenshot');
         const captureButton = document.getElementById('capture');
-        const context = canvas.getContext('2d');
+        const startRecordButton = document.getElementById('startRecord');
+        const stopRecordButton = document.getElementById('stopRecord');
+        const saveLocation = document.getElementById('saveLocation');
 
-        // Function to start the video stream
-        async function startVideo() {
+        let mediaStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+
+        async function setupCamera() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = stream;
+                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = mediaStream;
             } catch (err) {
-                console.error('Error accessing webcam:', err);
+                console.error("Error accessing webcam:", err);
             }
         }
 
-        // Function to capture the screenshot
-        function captureScreenshot() {
+        function capturePhoto() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            screenshot.src = canvas.toDataURL('image/png');
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'photo.jpg';
+                link.click();
+                URL.revokeObjectURL(url);
+            }, 'image/jpeg');
         }
 
-        // Start the video stream when the page loads
-        startVideo();
+        function startRecording() {
+            recordedChunks = [];
+            mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'video/webm' });
+            mediaRecorder.ondataavailable = event => {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'recording.webm';
+                link.click();
+                URL.revokeObjectURL(url);
+            };
+            mediaRecorder.start();
+            startRecordButton.disabled = true;
+            stopRecordButton.disabled = false;
+        }
 
-        // Add event listener to the capture button
-        captureButton.addEventListener('click', captureScreenshot);
+        function stopRecording() {
+            mediaRecorder.stop();
+            startRecordButton.disabled = false;
+            stopRecordButton.disabled = true;
+        }
+
+        captureButton.addEventListener('click', capturePhoto);
+        startRecordButton.addEventListener('click', startRecording);
+        stopRecordButton.addEventListener('click', stopRecording);
+
+        setupCamera();
+    </script>
+</body>
+</html>
