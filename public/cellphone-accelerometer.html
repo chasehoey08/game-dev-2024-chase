@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cellphone Accelerometer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #data {
+            font-size: 24px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cellphone Accelerometer</h1>
+    <div id="data">
+        <p>X Acceleration: <span id="xAccel">0</span> m/s²</p>
+        <p>Y Acceleration: <span id="yAccel">0</span> m/s²</p>
+        <p>Z Acceleration: <span id="zAccel">0</span> m/s²</p>
+    </div>
+
+    <script>
+        // Check if DeviceMotionEvent is supported
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', (event) => {
+                const x = event.accelerationIncludingGravity.x || 0;
+                const y = event.accelerationIncludingGravity.y || 0;
+                const z = event.accelerationIncludingGravity.z || 0;
+
+                // Update the HTML elements with the acceleration data
+                document.getElementById('xAccel').textContent = x.toFixed(2);
+                document.getElementById('yAccel').textContent = y.toFixed(2);
+                document.getElementById('zAccel').textContent = z.toFixed(2);
+            });
+        } else {
+            document.getElementById('data').innerHTML = '<p>Your device does not support accelerometer data.</p>';
+        }
+    </script>
+</body>
+</html>
