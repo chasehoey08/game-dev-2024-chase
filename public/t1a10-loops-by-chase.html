@@ -1,1 +1,114 @@
 
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a10-loops by Fred</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        #myDiv01 {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>t1a10-loops by Fred</h2>
+    <a href="#">Good reference to Javascript Loops</a><br>
+    
+    <h4>Example Input Output Code</h4>
+    <pre>
+    // Example code snippets would go here
+    </pre>
+
+    <h4>Example Working Code</h4>
+    Max loops: <input id="myNum01" type="number" value="4"><br>
+    Weird number: <input id="myWeird" type="number" value="2"><br>
+    
+    <input type="button" value="Basic For loop with Decisions" onclick="basicForLoopWithDecisions()">
+    <input type="button" value="Basic For loop only" onclick="basicForLoopOnly()">
+    <input type="button" value="Even number identifier" onclick="evenNumberIdentifier()">
+    <input type="button" value="Odd number identifier" onclick="oddNumberIdentifier()">
+    <input type="button" value="Weird if" onclick="weirdIf()">
+    
+    <div id="myDiv01"></div>
+
+    <script>
+        function basicForLoopWithDecisions() {
+            let myTemp = '';
+            let myMax = parseInt(document.getElementById('myNum01').value);
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                if (myLoop * 2 > myMax) {
+                    myTemp += 'Loop number exceeds max<br>';
+                }
+                myTemp += 'Loop number: ' + myLoop + '<br>';
+            }
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }
+
+        function basicForLoopOnly() {
+            let myTemp = '';
+            let myMax = parseInt(document.getElementById('myNum01').value);
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                myTemp += 'Loop number: ' + myLoop + '<br>';
+            }
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }
+
+        function evenNumberIdentifier() {
+            let myTemp = '';
+            let myMax = parseInt(document.getElementById('myNum01').value);
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                if (myLoop % 2 === 0) {
+                    myTemp += 'Even Number: ';
+                }
+                myTemp += 'Loop number: ' + myLoop + '<br>';
+            }
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }
+
+        function oddNumberIdentifier() {
+            let myTemp = '';
+            let myMax = parseInt(document.getElementById('myNum01').value);
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                if (myLoop % 2 === 1) {
+                    myTemp += '<font style="color:red;">Odd</font> ';
+                }
+                myTemp += 'Loop number: ' + myLoop + '<br>';
+            }
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }
+
+        function weirdIf() {
+            let myTemp = '';
+            let myMax = parseInt(document.getElementById('myNum01').value);
+            let myIn = parseInt(document.getElementById('myWeird').value);
+            for (let myLoop = 0; myLoop < myMax; myLoop++) {
+                if (myIn === myLoop) {
+                    myTemp += 'Weird ';
+                }
+                myTemp += 'Loop number: ' + myLoop + '<br>';
+            }
+            document.getElementById('myDiv01').innerHTML = myTemp;
+        }
+    </script>
+</body>
+
+</html>
