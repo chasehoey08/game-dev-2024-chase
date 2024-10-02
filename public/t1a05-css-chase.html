@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Example</title>
+    <title>CSS Examples</title>
     <style>
         body {
             font-family: Arial, sans-serif; /* Font style */
@@ -34,6 +34,77 @@
             padding: 5px; /* Padding for better appearance */
             display: inline-block; /* To fit border around text */
         }
+
+        /* 1. Box Shadow */
+        .shadow {
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+            padding: 10px;
+            margin: 10px 0;
+            background-color: white; /* Background color for contrast */
+        }
+
+        /* 2. Gradient Background */
+        .gradient {
+            background: linear-gradient(to right, #FFB6C1, #FF69B4); /* Gradient background */
+            padding: 10px;
+            color: white;
+        }
+
+        /* 3. Animation */
+        .bounce {
+            display: inline-block;
+            animation: bounce 1s infinite; /* Bounce animation */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0); /* Normal position */
+            }
+            40% {
+                transform: translateY(-30px); /* Bounce up */
+            }
+            60% {
+                transform: translateY(-15px); /* Bounce down */
+            }
+        }
+
+        /* 4. Hover Effect */
+        .hover-effect {
+            transition: transform 0.3s; /* Smooth transition */
+        }
+
+        .hover-effect:hover {
+            transform: scale(1.1); /* Scale up on hover */
+        }
+
+        /* 5. Custom Font */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+        
+        .custom-font {
+            font-family: 'Roboto', sans-serif; /* Custom font */
+            font-size: 1.5em; /* Bigger font size */
+        }
+
+        /* 6. Border Radius */
+        .rounded {
+            border-radius: 15px; /* Rounded corners */
+            padding: 10px;
+            background-color: #2E86C1; /* Background color */
+            color: white;
+        }
+
+        /* 7. Opacity */
+        .transparent {
+            opacity: 0.7; /* Semi-transparent effect */
+            padding: 10px;
+            background-color: #FF6347; /* Tomato background */
+            color: white;
+        }
+
+        /* 8. Text Shadow */
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow effect */
+        }
     </style>
 </head>
 <body>
@@ -43,7 +114,16 @@
 
     This is <b>bold</b> True?<br>
     This is <b class="cool">cool</b> Yes!<br><br>
-    This is <i class="bordered">italic with a border</i>
+    This is <i class="bordered">italic with a border</i><br><br>
+
+    <div class="shadow">This text has a shadow effect.</div>
+    <div class="gradient">This text has a gradient background.</div>
+    <div class="bounce">This text bounces!</div>
+    <div class="hover-effect" style="padding: 10px; background-color: #FFDDC1;">Hover over me!</div>
+    <div class="custom-font">This uses a custom font.</div>
+    <div class="rounded">This box has rounded corners.</div>
+    <div class="transparent">This box is semi-transparent.</div>
+    <div class="text-shadow">This text has a shadow.</div>
 
 </body>
 </html>
