@@ -2,21 +2,129 @@
 
 
 
-<h1 align=center>t1a07-functions-chase.html</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a07-functions-chase.html</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e6f7ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="button"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        #myDiv01 {
+            margin-top: 20px;
+            font-size: 20px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: white;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button-container input {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>t1a07-functions-chase.html</h1>
 
 <script>
-  function myVar(myIn){
-    return document.getElementById(myIn)
+    function myVar(myIn) {
+        return document.getElementById(myIn);
+    }
 
-  }
+    function showName() {
+        myVar('myDiv01').innerHTML = 'Your name is ' + myVar('myFirstName').value;
+    }
 
+    function clearInput() {
+        myVar('myFirstName').value = '';
+        myVar('myDiv01').innerHTML = '...';
+    }
+
+    function showGreeting() {
+        const greetings = ['Hello!', 'Welcome!', 'Good Day!', 'Hi there!', 'Greetings!'];
+        const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+        myVar('myDiv01').innerHTML = randomGreeting;
+    }
+
+    function changeTextColor() {
+        const colors = ['red', 'blue', 'green', 'orange', 'purple'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        myVar('myDiv01').style.color = randomColor;
+    }
+
+    function displayCurrentTime() {
+        const now = new Date();
+        myVar('myDiv01').innerHTML = 'Current time is: ' + now.toLocaleTimeString();
+    }
+
+    function countCharacters() {
+        const name = myVar('myFirstName').value;
+        myVar('myDiv01').innerHTML = 'Character count: ' + name.length;
+    }
+
+    function reverseName() {
+        const name = myVar('myFirstName').value;
+        myVar('myDiv01').innerHTML = 'Reversed name: ' + name.split('').reverse().join('');
+    }
+
+    function changeBackgroundColor() {
+        const colors = ['#e6f7ff', '#b3e0ff', '#99ccff', '#80b3ff', '#66a3ff'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        document.body.style.backgroundColor = randomColor;
+    }
 </script>
 
-Input:<input type=text id="myFirstName" value="chase">
-<input type=button value="Show on page" onclick="{
-
-  myVar('myDiv01').innerHTML = 'Your name is ' + myVar('myFirstName').value
-
-}">
+Input: <input type="text" id="myFirstName" value="chase">
+<input type="button" value="Show Name" onclick="showName()">
 
 <div id="myDiv01">...</div>
+
+<div class="button-container">
+    <input type="button" value="Clear Input" onclick="clearInput()">
+    <input type="button" value="Show Greeting" onclick="showGreeting()">
+    <input type="button" value="Change Text Color" onclick="changeTextColor()">
+    <input type="button" value="Display Current Time" onclick="displayCurrentTime()">
+    <input type="button" value="Count Characters" onclick="countCharacters()">
+    <input type="button" value="Reverse Name" onclick="reverseName()">
+    <input type="button" value="Change Background Color" onclick="changeBackgroundColor()">
+</div>
+
+</body>
+</html>
