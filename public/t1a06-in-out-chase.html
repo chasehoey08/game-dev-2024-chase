@@ -2,24 +2,113 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chases in-out</title>
+    <title>Name Display and Cool Buttons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f7ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        input[type="button"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .button-container input {
+            margin: 10px;
+        }
+        #myDivO1 {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
 
-<h1 align="center">in and out</h1>
+<h1>Name Display</h1>
 <input type="text" id="myFirstName" value="fred">
-<input type="button" value="Show on page" onclick="showName()">
+<input type="button" value="Show Name" onclick="showName()">
 
 <div id="myDivO1">...</div>
+
+<div class="button-container">
+    <input type="button" value="Change Background" onclick="changeBackground()">
+    <input type="button" value="Alert Name" onclick="alertName()">
+    <input type="button" value="Change Text Color" onclick="changeTextColor()">
+    <input type="button" value="Display Date" onclick="displayDate()">
+    <input type="button" value="Random Number" onclick="randomNumber()">
+    <input type="button" value="Add Exclamation" onclick="addExclamation()">
+    <input type="button" value="Clear Input" onclick="clearInput()">
+    <input type="button" value="Reverse Name" onclick="reverseName()">
+</div>
 
 <script>
     function showName() {
         document.getElementById('myDivO1').innerHTML = 'Your name is ' + document.getElementById('myFirstName').value;
+    }
+
+    function changeBackground() {
+        document.body.style.backgroundColor = document.body.style.backgroundColor === 'lightblue' ? '#e6f7ff' : 'lightblue';
+    }
+
+    function alertName() {
+        alert('Your name is ' + document.getElementById('myFirstName').value);
+    }
+
+    function changeTextColor() {
+        document.getElementById('myDivO1').style.color = document.getElementById('myDivO1').style.color === 'red' ? '#333' : 'red';
+    }
+
+    function displayDate() {
+        document.getElementById('myDivO1').innerHTML = 'Current date is ' + new Date().toLocaleDateString();
+    }
+
+    function randomNumber() {
+        document.getElementById('myDivO1').innerHTML = 'Random number: ' + Math.floor(Math.random() * 100) + 1;
+    }
+
+    function addExclamation() {
+        const currentText = document.getElementById('myDivO1').innerHTML;
+        document.getElementById('myDivO1').innerHTML = currentText + '!';
+    }
+
+    function clearInput() {
+        document.getElementById('myFirstName').value = '';
+    }
+
+    function reverseName() {
+        const name = document.getElementById('myFirstName').value;
+        const reversed = name.split('').reverse().join('');
+        document.getElementById('myDivO1').innerHTML = 'Reversed name: ' + reversed;
     }
 </script>
 
