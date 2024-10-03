@@ -1,1 +1,27 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Display</title>
+</head>
+<body>
+
+<h1 align="center">Name Display</h1>
+<input type="text" id="myFirstName" value="fred">
+<input type="button" value="Show on page" onclick="showName()">
+
+<div id="myDivO1">...</div>
+
+<script>
+    function showName() {
+        document.getElementById('myDivO1').innerHTML = 'Your name is ' + document.getElementById('myFirstName').value;
+    }
+</script>
+
+</body>
+</html>
