@@ -69,6 +69,17 @@
     <input type="button" value="Add Exclamation" onclick="addExclamation()">
     <input type="button" value="Clear Input" onclick="clearInput()">
     <input type="button" value="Reverse Name" onclick="reverseName()">
+    
+    <input type="button" value="Red Background" onclick="setBackgroundColor('red')">
+    <input type="button" value="Blue Background" onclick="setBackgroundColor('blue')">
+    <input type="button" value="Light Green Background" onclick="setBackgroundColor('lightgreen')">
+    <input type="button" value="Yellow Background" onclick="setBackgroundColor('yellow')">
+    <input type="button" value="Pink Background" onclick="setBackgroundColor('pink')">
+    
+    <input type="button" value="Change to Green Text" onclick="setTextColor('green')">
+    <input type="button" value="Change to Blue Text" onclick="setTextColor('blue')">
+    <input type="button" value="Change to Orange Text" onclick="setTextColor('orange')">
+    <input type="button" value="Change to Purple Text" onclick="setTextColor('purple')">
 </div>
 
 <script>
@@ -109,6 +120,14 @@
         const name = document.getElementById('myFirstName').value;
         const reversed = name.split('').reverse().join('');
         document.getElementById('myDivO1').innerHTML = 'Reversed name: ' + reversed;
+    }
+
+    function setBackgroundColor(color) {
+        document.body.style.backgroundColor = color;
+    }
+
+    function setTextColor(color) {
+        document.getElementById('myDivO1').style.color = color;
     }
 </script>
 
