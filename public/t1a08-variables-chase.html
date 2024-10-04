@@ -1,1 +1,48 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a08 - Variables - Chase</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+<h1 align="center">t1a08 - Variables</h1>
+<p>W3Schools link to variables <a href="https://www.w3schools.com/js/js_variables.asp">here</a></p>
+
+Input 1: <input type="text" id="myIn01" value="5"><br>
+Input 2: <input type="text" id="myIn02" value="7"><br>
+
+<input type="button" value="Add and fix" onclick="addAndFix()">
+<div id="myDiv01">...</div>
+
+<input type="button" value="Add2 and fix" onclick="add2AndFix()"><br><br>
+
+<script>
+    function addAndFix() {
+        const myX = parseFloat(document.getElementById('myIn01').value);
+        const myY = parseFloat(document.getElementById('myIn02').value);
+        const myTotal = myX + myY;
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+    }
+
+    function add2AndFix() {
+        const myX = parseFloat(document.getElementById('myIn01').value);
+        const myY = parseFloat(document.getElementById('myIn02').value);
+        const myTotal = myX + myY;
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+    }
+</script>
+
+<pre>
+Other programming languages use defined variables:
+boolean; int8 or byte; int; double; float; char; string
+</pre>
+
+</body>
+</html>
