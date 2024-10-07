@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,45 +10,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chase's Index</title>
     <style>
+        :root {
+            --main-bg-color: #007bff;
+            --hover-bg-color: #0056b3;
+            --text-color: #ffffff;
+            --heading-color: #00796b;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #e0f7fa; /* Light blue background */
-            color: #333; /* Dark text */
+            background-color: #e0f7fa;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
         h1 {
             text-align: center;
-            color: #00796b; /* Teal color */
+            color: var(--heading-color);
             font-size: 2.5em;
+            margin-bottom: 20px;
         }
 
-        ul {
-            list-style-type: none; /* Remove default list styling */
-            padding: 0;
+        .container {
+            max-width: 1200px; /* Limits the width of the page */
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        li {
-            margin: 10px 0;
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive 3-column grid */
+            gap: 15px;
+        }
+
+        .link-grid li {
+            list-style-type: none;
         }
 
         a {
-            text-decoration: none; /* Remove underline */
-            color: #ffffff; /* White text */
-            background-color: #007bff; /* Blue background for links */
+            text-decoration: none;
+            color: var(--text-color);
+            background-color: var(--main-bg-color);
             padding: 10px 15px;
             border-radius: 5px;
-            transition: background-color 0.3s; /* Smooth transition */
-            display: inline-block; /* Make links behave like buttons */
+            transition: background-color 0.3s;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
         }
 
         a:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: var(--hover-bg-color);
         }
 
         footer {
@@ -53,30 +76,44 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.9em;
-            color: #555; /* Gray color for footer */
+            color: #555;
         }
     </style>
 </head>
 
 <body>
-    <div>
+    <div class="container">
         <h1>Chase's Index</h1>
-        <ul>
+        <ul class="link-grid">
             <li><a href="t1a01-basic.html">t1a01-basic.html</a></li>
-            <li><a href="webcam.html">webcam.html</a></li>
-            <li><a href="cellphone-accelerometer.html">cellphone-accelerometer.html</a></li>
             <li><a href="t1a02-proper-chase.html">t1a02-proper-chase.html</a></li>
-            <li><a href="t1a10-loops-by-chase.html">t1a10-loops-by-chase.html</a></li>
-            <li><a href="t1a11-arrays-chase.html">t1a11-arrays-chase.html</a></li>
             <li><a href="t1a03-tables-lists-chase.html">t1a03-tables-lists-chase.html</a></li>
             <li><a href="t1a04-cows-test-chase.html">t1a04-cows-test-chase.html</a></li>
-            <li><a href="t2a02-objects-by-chase.html">t2a02-objects-by-chase.html</a></li>
             <li><a href="t1a05-css-chase.html">t1a05-css-chase.html</a></li>
             <li><a href="t1a06-in-out-chase.html">t1a06-in-out-chase.html</a></li>
             <li><a href="t1a07-functions-chase.html">t1a07-functions-chase.html</a></li>
             <li><a href="t1a08-variables-chase.html">t1a08-variables-chase.html</a></li>
+            <li><a href="t1a09-some-link.html">t1a09-some-link.html</a></li>
+            <li><a href="t1a10-loops-by-chase.html">t1a10-loops-by-chase.html</a></li>
+            <li><a href="t1a11-arrays-chase.html">t1a11-arrays-chase.html</a></li>
+            <li><a href="t1a12-more-examples.html">t1a12-more-examples.html</a></li>
+            <li><a href="t1a13...">t1a13...</a></li>
+            <li><a href="t1a14...">t1a14...</a></li>
+            <li><a href="t1a15...">t1a15...</a></li>
+            <li><a href="t1a16...">t1a16...</a></li>
+            <li><a href="t1a17...">t1a17...</a></li>
+            <li><a href="t1a18...">t1a18...</a></li>
+            <li><a href="t1a19...">t1a19...</a></li>
+            <li><a href="t1a20...">t1a20...</a></li>
+            <li><a href="t1a21...">t1a21...</a></li>
+            <li><a href="t1a22...">t1a22...</a></li>
+            <li><a href="t1a23...">t1a23...</a></li>
+            <li><a href="t1a24...">t1a24...</a></li>
+            <li><a href="t1a25...">t1a25...</a></li>
+            <li><a href="webcam.html">webcam.html</a></li>
         </ul>
     </div>
+    
     <footer>
         &copy; 2024 Chase's Projects. All rights reserved.
     </footer>
