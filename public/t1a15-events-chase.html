@@ -1,1 +1,60 @@
 
+
+
+
+<h1 align="center">t1a15-events-fred.html</h1>
+
+<b>Input:</b>
+<input type="text" id="myFirstName" value="fred" onBlur="console.log('onBlur event triggered')">
+
+<br><br>
+
+<input type="button" value="Show on page" onclick="document.getElementById('myDiv01').innerHTML = 'Hey'">
+
+<br><br>
+
+<div id="myDiv01" onMouseOver="console.log('onMouseover event triggered')">...</div>
+
+<br><br>
+
+<!-- Additional 8 events -->
+
+<!-- Event 1: Focus -->
+<input type="text" placeholder="Focus on me" onFocus="console.log('Focus event triggered')">
+
+<br><br>
+
+<!-- Event 2: Change -->
+<input type="text" placeholder="Change me" onChange="console.log('Change event triggered')">
+
+<br><br>
+
+<!-- Event 3: Keydown -->
+<input type="text" placeholder="Press a key" onKeyDown="console.log('Keydown event triggered')">
+
+<br><br>
+
+<!-- Event 4: Keyup -->
+<input type="text" placeholder="Release a key" onKeyUp="console.log('Keyup event triggered')">
+
+<br><br>
+
+<!-- Event 5: Submit -->
+<form onSubmit="event.preventDefault(); console.log('Submit event triggered');">
+  <input type="submit" value="Submit form">
+</form>
+
+<br><br>
+
+<!-- Event 6: Click -->
+<button onClick="console.log('Click event triggered')">Click me</button>
+
+<br><br>
+
+<!-- Event 7: Double Click -->
+<button onDblClick="console.log('Double click event triggered')">Double click me</button>
+
+<br><br>
+
+<!-- Event 8: Context Menu -->
+<div onContextMenu="console.log('Context menu event triggered'); return false;">Right-click on me</div>
