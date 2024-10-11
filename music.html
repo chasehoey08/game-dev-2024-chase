@@ -1,1 +1,100 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Sheet Generator and Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #music-sheet {
+            margin: 20px auto;
+            width: 400px;
+            height: 150px;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Music Sheet Generator and Player</h1>
+    <div id="music-sheet"></div>
+
+    <div id="controls">
+        <button onclick="generateMusic()">Generate Music</button>
+        <button onclick="playMusic()">Play Music</button>
+    </div>
+
+    <!-- Include VexFlow and Tone.js -->
+    <script src="https://unpkg.com/vexflow/releases/vexflow-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.33/Tone.js"></script>
+
+    <script>
+        let notes = ["C4", "D4", "E4", "F4", "G4", "A4", "B4"]; // Notes array
+        let currentNotes = []; // Array to hold generated notes
+
+        // Function to generate random music sheet
+        function generateMusic() {
+            // Clear existing music
+            document.getElementById("music-sheet").innerHTML = "";
+
+            // Setup VexFlow renderer
+            const VF = Vex.Flow;
+            const div = document.getElementById("music-sheet");
+            const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+            renderer.resize(400, 150);
+            const context = renderer.getContext();
+            context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+
+            // Create a stave
+            const stave = new VF.Stave(10, 40, 380);
+            stave.addClef("treble").setContext(context).draw();
+
+            // Generate random notes
+            currentNotes = [];
+            for (let i = 0; i < 4; i++) {
+                const randomNote = notes[Math.floor(Math.random() * notes.length)];
+                currentNotes.push(randomNote); // Store the note
+            }
+
+            // VexFlow Notes
+            const vexNotes = currentNotes.map(note => new VF.StaveNote({
+                keys: [note.toLowerCase()],
+                duration: "q"
+            }).addAccidental(0, new VF.Accidental("")));
+
+            // Create a voice and format it
+            const voice = new VF.Voice({num_beats: 4, beat_value: 4});
+            voice.addTickables(vexNotes);
+
+            const formatter = new VF.Formatter().joinVoices([voice]).format([voice], 300);
+            voice.draw(context, stave);
+        }
+
+        // Function to play the generated music using Tone.js
+        function playMusic() {
+            const synth = new Tone.Synth().toDestination();
+            let now = Tone.now();
+
+            // Play the current notes
+            currentNotes.forEach((note, index) => {
+                synth.triggerAttackRelease(note, "8n", now + index * 0.5);
+            });
+        }
+
+        // Initial call to generate music on page load
+        generateMusic();
+    </script>
+
+</body>
+</html>
