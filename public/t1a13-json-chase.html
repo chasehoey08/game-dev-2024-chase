@@ -8,56 +8,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON Fetcher</title>
-    <script>
-        function myShowJSON(myIn) {
-            document.getElementById('myDiv1').innerHTML = `Sent: ${myIn}`;
+    <style>
+        /* General page styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
         }
 
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        textarea {
+            width: 80%;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        input, select {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+            font-size: 16px;
+        }
+
+        #myDiv1 {
+            margin-top: 20px;
+            padding: 20px;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        #colorPicker {
+            margin-top: 20px;
+        }
+
+        /* Centering the entire content */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .loading {
+            color: #007bff;
+            font-style: italic;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        // Function to fetch and display JSON
         async function fetchData() {
-            const url = document.getElementById('myText1').value; // Get URL from input field
+            const url = document.getElementById('myText1').value;
+            const outputDiv = document.getElementById('myDiv1');
+            outputDiv.innerHTML = "<span class='loading'>Loading...</span>";
             try {
                 const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
                 const data = await response.json();
-                console.log(data);
-                const myJson = JSON.stringify(data, null, 2); // Format the JSON
-                document.getElementById('myDiv1').innerHTML = `<pre>${myJson}</pre>`;
+                const myJson = JSON.stringify(data, null, 2);
+                outputDiv.innerHTML = `<pre>${myJson}</pre>`;
             } catch (error) {
-                document.getElementById('myDiv1').innerHTML = `Error: ${error.message}`;
+                outputDiv.innerHTML = `<span class='error'>Error: ${error.message}</span>`;
             }
+        }
+
+        // Function to change background color
+        function changeBackgroundColor() {
+            const color = document.getElementById('colorPicker').value;
+            document.body.style.backgroundColor = color;
         }
     </script>
 </head>
 <body>
-    <h1 align="center">JSON Fetcher</h1>
+    <div class="container">
+        <h1>JSON Fetcher</h1>
 
-    <p>Explanation of JSON compared to JavaScript objects formatted for this textarea.</p>
-    
-    <textarea cols="70" rows="5">
-        JSON (JavaScript Object Notation) is a format for structuring data, 
-        often used for transmitting data between a server and web applications. 
-        In JavaScript, it is an object format, but JSON is a string representation 
-        of an object that needs to be parsed into an object to work with.
-    </textarea>
+        <p>Explanation of JSON compared to JavaScript objects:</p>
 
-    <br><br>
-    
-    <label>Enter a JSON returning URL:</label>
-    <input type="text" id="myText1" value="https://randomfox.ca/floof/">
-    <input type="button" value="Show JSON" onclick="fetchData()">
-    
-    <br><br>
-    
-    <label>Select a URL to fetch JSON:</label>
-    <select size="1" onchange="document.getElementById('myText1').value = this.value;">
-        <option value="https://randomfox.ca/floof/">randomfox</option>
-        <option value="https://dog.ceo/api/breeds/image/random">dog.ceo</option>
-        <option value="https://api.thecatapi.com/v1/images/search">thecatapi</option>
-        <option value="https://api.coindesk.com/v1/bpi/currentprice.json">coindesk</option>
-        <option value="https://jsonplaceholder.typicode.com/todos/1">jsonplaceholder</option>
-    </select>
+        <textarea cols="70" rows="5" readonly>
+JSON (JavaScript Object Notation) is a format for structuring data, 
+often used for transmitting data between a server and web applications. 
+In JavaScript, it is an object format, but JSON is a string representation 
+of an object that needs to be parsed into an object to work with.
+        </textarea>
 
-    <br><br>
+        <br>
 
-    <div id="myDiv1">...</div>
+        <label>Enter a JSON returning URL:</label>
+        <input type="text" id="myText1" value="https://randomfox.ca/floof/">
+        <input type="button" value="Show JSON" onclick="fetchData()">
+
+        <br>
+
+        <label>Select a URL to fetch JSON:</label>
+        <select size="1" onchange="document.getElementById('myText1').value = this.value;">
+            <option value="https://randomfox.ca/floof/">randomfox</option>
+            <option value="https://dog.ceo/api/breeds/image/random">dog.ceo</option>
+            <option value="https://api.thecatapi.com/v1/images/search">thecatapi</option>
+            <option value="https://api.coindesk.com/v1/bpi/currentprice.json">coindesk</option>
+            <option value="https://jsonplaceholder.typicode.com/todos/1">jsonplaceholder</option>
+        </select>
+
+        <br>
+
+        <!-- Color picker for background change -->
+        <label for="colorPicker">Change Background Color:</label>
+        <input type="color" id="colorPicker" onchange="changeBackgroundColor()">
+
+        <br><br>
+
+        <!-- JSON Output Div -->
+        <div id="myDiv1">...</div>
+    </div>
 </body>
 </html>
