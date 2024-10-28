@@ -1,24 +1,102 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objects and Arrays</title>
+    <style>
+        /* Basic reset and font */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Centered container */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        /* Title styling */
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+
+        /* Textarea styling */
+        textarea {
+            width: 80%;
+            max-width: 500px;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Button styling */
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #357ab7;
+        }
+
+        /* Display div styling */
+        #displayDiv {
+            margin-top: 20px;
+            padding: 15px;
+            width: 80%;
+            max-width: 500px;
+            min-height: 50px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 0.9rem;
+            color: #333;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-    <h1 align="center">tla14-objects-and-arrays-fred.html</h1>
-    <textarea rows="4" cols="70">
+    <h1>Objects and Arrays</h1>
+    <textarea rows="10" cols="50" readonly>
         Research on JavaScript objects and arrays:
         - An array is an ordered list of values, which can contain other data types, including objects.
         - An object is a collection of key-value pairs and can have arrays as property values.
         - This example demonstrates both an object with an array and an array with objects.
     </textarea>
-    <br><br>
-
+    
     <!-- Buttons and display div -->
     <button id="arrayButton">Array with Object in it</button>
     <button id="objectButton">Object with Array in it</button>
-    <div id="displayDiv" style="margin-top: 20px; font-weight: bold;"></div>
+    <div id="displayDiv">Output will appear here...</div>
 
     <script>
         // Array containing objects
