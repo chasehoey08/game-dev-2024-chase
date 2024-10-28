@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objects and Arrays</title>
+</head>
+<body>
+    <h1 align="center">tla14-objects-and-arrays-fred.html</h1>
+    <textarea rows="4" cols="70">
+        Research on JavaScript objects and arrays:
+        - An array is an ordered list of values, which can contain other data types, including objects.
+        - An object is a collection of key-value pairs and can have arrays as property values.
+        - This example demonstrates both an object with an array and an array with objects.
+    </textarea>
+    <br><br>
+
+    <!-- Buttons and display div -->
+    <button id="arrayButton">Array with Object in it</button>
+    <button id="objectButton">Object with Array in it</button>
+    <div id="displayDiv" style="margin-top: 20px; font-weight: bold;"></div>
+
+    <script>
+        // Array containing objects
+        const myArray = [
+            { name: 'Bob', age: 28 },
+            { name: 'Charlie', age: 32 }
+        ];
+
+        // Object containing an array
+        const myObject = {
+            name: 'Alice',
+            age: 25,
+            hobbies: ['reading', 'coding', 'hiking']
+        };
+
+        // Button functions to display information
+        document.getElementById('arrayButton').onclick = function() {
+            document.getElementById('displayDiv').textContent = JSON.stringify(myArray, null, 2);
+        };
+
+        document.getElementById('objectButton').onclick = function() {
+            document.getElementById('displayDiv').textContent = JSON.stringify(myObject, null, 2);
+        };
+    </script>
+</body>
+</html>
