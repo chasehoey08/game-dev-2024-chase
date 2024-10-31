@@ -7,49 +7,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Form Elements</title>
+    <title>Styled Form Elements</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 24px;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+
+        /* Form Styling */
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+            color: #4CAF50;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        input[type="button"],
+        button,
+        input[type="submit"],
+        input[type="reset"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        input[type="button"]:hover,
+        button:hover,
+        input[type="submit"]:hover,
+        input[type="reset"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Radio and Checkbox Styling */
+        .radio-group,
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+
+        .radio-group label,
+        .checkbox-group label {
+            font-weight: normal;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
 
-<h1 align="center">t1a04-forms-fred.html</h1>
-<p>Use an LLM like <a href="https://copilot.microsoft.com">Copilot</a> and ask it to "Show me how to do all the simple form elements on one HTML page as if I was a 10-year-old".</p>
+<h1>t1a04-forms-fred.html</h1>
+<p>Use an LLM like <a href="https://copilot.microsoft.com" style="color: #4CAF50; text-decoration: none;">Copilot</a> and ask it to "Show me how to do all the simple form elements on one HTML page as if I was a 10-year-old".</p>
 
 <form>
     <!-- Text Input -->
-    Name: <input type="text" id="name" value="Fred"><br><br>
+    <label for="name">Name:</label>
+    <input type="text" id="name" value="Fred">
     
     <!-- Password Input -->
-    Password: <input type="password" id="password" value="never"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" value="never">
     
     <!-- Number Input -->
-    Number: <input type="number" value="6"><br><br>
+    <label for="number">Number:</label>
+    <input type="number" id="number" value="6">
     
     <!-- Button as Input -->
-    Button as an input: <input type="button" value="Click" onclick="alert('Hi')"><br><br>
+    <label>Button as an input:</label>
+    <input type="button" value="Click" onclick="alert('Hi')">
     
     <!-- Button Tag -->
-    Button as a button tag: <button onclick="alert('Hello')">Click me</button><br><br>
+    <label>Button as a button tag:</label>
+    <button onclick="alert('Hello')">Click me</button>
     
     <!-- Radio Buttons -->
-    <p>Radio Buttons:</p>
-    <input type="radio" name="myRad" value="red"> Red<br>
-    <input type="radio" name="myRad" value="blue"> Blue<br><br>
+    <div class="radio-group">
+        <p>Radio Buttons:</p>
+        <input type="radio" id="red" name="myRad" value="red">
+        <label for="red">Red</label><br>
+        
+        <input type="radio" id="blue" name="myRad" value="blue">
+        <label for="blue">Blue</label>
+    </div>
     
     <!-- Checkboxes -->
-    <p>Checkboxes:</p>
-    <input type="checkbox" name="interest" value="reading"> Reading<br>
-    <input type="checkbox" name="interest" value="sports"> Sports<br><br>
+    <div class="checkbox-group">
+        <p>Checkboxes:</p>
+        <input type="checkbox" id="reading" name="interest" value="reading">
+        <label for="reading">Reading</label><br>
+        
+        <input type="checkbox" id="sports" name="interest" value="sports">
+        <label for="sports">Sports</label>
+    </div>
     
     <!-- Text Area -->
-    <p>Text Area:</p>
-    <textarea rows="4" cols="50">Writing here</textarea><br><br>
+    <label for="textarea">Text Area:</label>
+    <textarea id="textarea" rows="4" cols="50">Writing here</textarea>
     
     <!-- Select Box -->
-    <p>Select Box:</p>
-    <select>
+    <label for="select">Select Box:</label>
+    <select id="select">
         <option value="usa">USA</option>
         <option value="canada">Canada</option>
-    </select><br><br>
+    </select>
     
     <!-- Submit and Reset Buttons -->
     <input type="submit" value="Submit">
