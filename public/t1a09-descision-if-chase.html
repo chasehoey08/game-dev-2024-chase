@@ -1,1 +1,185 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Making by Fred</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Main container styling */
+        .container {
+            max-width: 500px;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        /* Input field styling */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        /* Button styling */
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex: 1 1 45%;
+            box-sizing: border-box;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Output display styling */
+        #myDiv01 {
+            background-color: #e9f5ec;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #2d7a3e;
+            font-weight: bold;
+            border: 1px solid #b3e2c4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Decision Making by Fred</h1>
+    
+    <div class="input-group">
+        <label for="myText1">Name:</label>
+        <input type="text" id="myText1" value="Fred">
+    </div>
+
+    <div class="input-group">
+        <label for="myNum1">Age:</label>
+        <input type="number" id="myNum1" value="14">
+    </div>
+
+    <div id="myDiv01">...</div>
+
+    <div class="buttons">
+        <!-- Buttons for decision-making -->
+        <input type="button" value="Is Fred?" onclick="isFred()">
+        <input type="button" value="Is Not Fred?" onclick="isNotFred()">
+        <input type="button" value="Is Age Above 18?" onclick="isAgeAbove18()">
+        <input type="button" value="Is Age Below 18?" onclick="isAgeBelow18()">
+        <input type="button" value="Is Fred AND Above 18?" onclick="isFredAndAbove18()">
+        <input type="button" value="Is Fred OR Above 18?" onclick="isFredOrAbove18()">
+        <input type="button" value="Is Not Fred AND Below 18?" onclick="isNotFredAndBelow18()">
+        <input type="button" value="Is Not Fred OR Below 18?" onclick="isNotFredOrBelow18()">
+    </div>
+</div>
+
+<script>
+    // Check if input text is "Fred"
+    function isFred() {
+        let name = document.getElementById('myText1').value;
+        document.getElementById('myDiv01').innerHTML = (name === 'Fred') ? 'Hi Fred!' : 'You are not Fred.';
+    }
+
+    // Check if input text is NOT "Fred"
+    function isNotFred() {
+        let name = document.getElementById('myText1').value;
+        document.getElementById('myDiv01').innerHTML = (name !== 'Fred') ? 'You are not Fred.' : 'Hi Fred!';
+    }
+
+    // Check if age is above 18
+    function isAgeAbove18() {
+        let age = parseInt(document.getElementById('myNum1').value);
+        document.getElementById('myDiv01').innerHTML = (age > 18) ? 'You are above 18.' : 'You are 18 or younger.';
+    }
+
+    // Check if age is below 18
+    function isAgeBelow18() {
+        let age = parseInt(document.getElementById('myNum1').value);
+        document.getElementById('myDiv01').innerHTML = (age < 18) ? 'You are below 18.' : 'You are 18 or older.';
+    }
+
+    // Check if name is "Fred" AND age is above 18
+    function isFredAndAbove18() {
+        let name = document.getElementById('myText1').value;
+        let age = parseInt(document.getElementById('myNum1').value);
+        document.getElementById('myDiv01').innerHTML = (name === 'Fred' && age > 18) ? 'Hi Fred, you are above 18.' : 'Condition not met.';
+    }
+
+    // Check if name is "Fred" OR age is above 18
+    function isFredOrAbove18() {
+        let name = document.getElementById('myText1').value;
+        let age = parseInt(document.getElementById('myNum1').value);
+        document.getElementById('myDiv01').innerHTML = (name === 'Fred' || age > 18) ? 'Either you are Fred or above 18.' : 'Condition not met.';
+    }
+
+    // Check if name is NOT "Fred" AND age is below 18
+    function isNotFredAndBelow18() {
+        let name = document.getElementById('myText1').value;
+        let age = parseInt(document.getElementById('myNum1').value);
+        document.getElementById('myDiv01').innerHTML = (name !== 'Fred' && age < 18) ? 'You are not Fred and below 18.' : 'Condition not met.';
+    }
+
+    // Check if name is NOT "Fred" OR age is below 18
+    function isNotFredOrBelow18() {
+        let name = document.getElementById('myText1').value;
+        let age = parseInt(document.getElementById('myNum1').value);
+        document.getElementById('myDiv01').innerHTML = (name !== 'Fred' || age < 18) ? 'Either you are not Fred or below 18.' : 'Condition not met.';
+    }
+</script>
+
+</body>
+</html>
