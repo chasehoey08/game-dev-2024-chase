@@ -1,1 +1,150 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Objects by Fred</title>
+    <style>
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Main container styling */
+        .container {
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Header and link styling */
+        h2 {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Code example box */
+        pre {
+            background-color: #f3f3f3;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            font-size: 16px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        /* Input field styling */
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button styling */
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Display div styling */
+        #myDiv01 {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #444;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>JavaScript Objects by Fred</h2>
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects" target="_blank">Good reference to JavaScript Objects</a></p>
+    <p>Objects are stored in named variables.</p>
+
+    <h4>Example Object Code</h4>
+    <pre>
+let myPerson = {
+    "firstName": "John",
+    "lastName": "Doe",
+    "age": 50,
+    "eyeColor": "blue"
+};
+    </pre>
+
+    <h4>Example Working Object Code</h4>
+    <p>Nothing: <input type="text" id="myText01" value="Useless at the moment"></p>
+
+    <!-- Button to Show Object Properties -->
+    <input type="button" value="Example Object Set and Show" onclick="showObjectProperties()">
+
+    <!-- Div to Display Object Properties -->
+    <div id="myDiv01">...</div>
+</div>
+
+<script>
+    function showObjectProperties() {
+        // Define the object
+        let myPerson = {
+            firstName: "John",
+            lastName: "Doe",
+            age: 50,
+            eyeColor: "blue"
+        };
+        
+        // Display properties in the div
+        let displayDiv = document.getElementById("myDiv01");
+        displayDiv.innerHTML = `<br>myPerson Object has properties:<br>`;
+        displayDiv.innerHTML += `firstName: ${myPerson.firstName}<br>`;
+        displayDiv.innerHTML += `lastName: ${myPerson.lastName}<br>`;
+        displayDiv.innerHTML += `age: ${myPerson.age}<br>`;
+        displayDiv.innerHTML += `eyeColor: ${myPerson.eyeColor}<br>`;
+    }
+</script>
+
+</body>
+</html>
