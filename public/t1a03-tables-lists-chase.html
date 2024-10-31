@@ -2,7 +2,6 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +16,7 @@
             line-height: 1.6;
             margin: 20px;
         }
-        
+
         h1 {
             color: #4CAF50;
             text-align: center;
@@ -57,6 +56,16 @@
             list-style-type: decimal;
         }
 
+        .nested-list {
+            list-style-type: circle;
+            margin-left: 20px;
+        }
+
+        .nested-cities {
+            list-style-type: decimal;
+            margin-left: 40px;
+        }
+
         dt {
             font-weight: bold;
             color: #4CAF50;
@@ -68,7 +77,8 @@
         }
 
         .image {
-            width: 50px;
+            width: 100px;
+            height: auto;
         }
 
         a {
@@ -85,8 +95,8 @@
 
 <h1>T1A03-Tables-Lists-Fred</h1>
 
-<!-- 2x2 Table -->
-<table border="1">
+<h2>2x2 Table</h2>
+<table>
     <tr>
         <th>Header 1</th>
         <th>Header 2</th>
@@ -101,8 +111,8 @@
     </tr>
 </table>
 
-<!-- 3x4 Table -->
-<table border="1">
+<h2>3x4 Animal Table</h2>
+<table>
     <tr>
         <th>#</th>
         <th>Animal</th>
@@ -112,38 +122,38 @@
     <tr>
         <td>1</td>
         <td>Dog</td>
-        <td><img class="image" src="dog.jpg" alt="Dog"></td>
-        <td><a href="https://www.akc.org/dog-breeds/">More about Dogs</a></td>
+        <td><img class="image" src="https://via.placeholder.com/100" alt="Image of a Dog"></td>
+        <td><a href="https://www.akc.org/dog-breeds/" aria-label="Learn more about dog breeds">More about Dogs</a></td>
     </tr>
     <tr>
         <td>2</td>
         <td>Cat</td>
-        <td><img class="image" src="cat.jpg" alt="Cat"></td>
-        <td><a href="https://cats.com/">More about Cats</a></td>
+        <td><img class="image" src="https://via.placeholder.com/100" alt="Image of a Cat"></td>
+        <td><a href="https://cats.com/" aria-label="Learn more about cats">More about Cats</a></td>
     </tr>
     <tr>
         <td>3</td>
         <td>Rabbit</td>
-        <td><img class="image" src="rabbit.jpg" alt="Rabbit"></td>
-        <td><a href="https://rabbit.org/">More about Rabbits</a></td>
+        <td><img class="image" src="https://via.placeholder.com/100" alt="Image of a Rabbit"></td>
+        <td><a href="https://rabbit.org/" aria-label="Learn more about rabbits">More about Rabbits</a></td>
     </tr>
 </table>
 
-<!-- Unordered List -->
+<h2>Unordered List of Toys</h2>
 <ul>
     <li>Toy Car</li>
     <li>Teddy Bear</li>
     <li>Building Blocks</li>
 </ul>
 
-<!-- Ordered List -->
+<h2>Ordered List of Toys</h2>
 <ol>
     <li>Toy Car</li>
     <li>Teddy Bear</li>
     <li>Building Blocks</li>
 </ol>
 
-<!-- Definition List -->
+<h2>Definition List</h2>
 <dl>
     <dt>HTML</dt>
     <dd>A language for creating web pages.</dd>
@@ -153,26 +163,26 @@
     <dd>A language for making web pages interactive.</dd>
 </dl>
 
-<!-- Nested Lists -->
+<h2>Nested Lists of Countries and Cities</h2>
 <ul>
     <li>Countries
-        <ul>
+        <ul class="nested-list">
             <li>USA
-                <ol>
+                <ol class="nested-cities">
                     <li>New York</li>
                     <li>Los Angeles</li>
                     <li>Chicago</li>
                 </ol>
             </li>
             <li>Canada
-                <ol>
+                <ol class="nested-cities">
                     <li>Toronto</li>
                     <li>Vancouver</li>
                     <li>Montreal</li>
                 </ol>
             </li>
             <li>Australia
-                <ol>
+                <ol class="nested-cities">
                     <li>Sydney</li>
                     <li>Melbourne</li>
                     <li>Brisbane</li>
