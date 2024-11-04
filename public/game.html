@@ -43,7 +43,7 @@
     function initGame() {
         player = {
             x: 50, y: 500, width: 40, height: 40, color: '#FFDD44',
-            dx: 0, dy: 0, speed: 5, jumping: false
+            dx: 0, dy: 0, speed: 5, jumping: false, fallingThrough: false
         };
         particles = [];
         platforms = [
@@ -77,9 +77,15 @@
             player.dy = -10;
             player.jumping = true;
         }
+        if (e.key === 'ArrowDown') {  // Enable falling through platforms
+            player.fallingThrough = true;
+        }
     });
     window.addEventListener('keyup', e => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') player.dx = 0;
+        if (e.key === 'ArrowDown') {  // Disable falling through once down arrow is released
+            player.fallingThrough = false;
+        }
     });
 
     // Collision detection
@@ -105,7 +111,9 @@
 
         // Platform collision
         platforms.forEach(platform => {
-            if (isColliding(player, { ...platform, y: platform.y - 5 }) && player.dy > 0) {
+            if (!player.fallingThrough &&
+                isColliding(player, { ...platform, y: platform.y - 5 }) && 
+                player.dy > 0) {
                 player.y = platform.y - player.height;
                 player.dy = 0;
                 player.jumping = false;
@@ -214,26 +222,3 @@
     }
 
     function createParticles(x, y, count, color) {
-        for (let i = 0; i < count; i++) {
-            particles.push({
-                x: x, y: y,
-                dx: (Math.random() - 0.5) * 4,
-                dy: (Math.random() - 0.5) * 4,
-                size: Math.random() * 5 + 2,
-                alpha: 1,
-                color: color
-            });
-        }
-    }
-
-    function gameLoop() {
-        update();
-        draw();
-        requestAnimationFrame(gameLoop);
-    }
-
-    initGame();  // Start the game initially
-    gameLoop();  // Begin the game loop
-</script>
-</body>
-</html>
