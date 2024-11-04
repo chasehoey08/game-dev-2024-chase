@@ -1,1 +1,184 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { background-color: #ffffff; display: block; }
+    </style>
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 600;
+
+    // Game variables
+    let gravity = 0.5;
+    let score = 0;
+    const player = {
+        x: 50, y: 550, width: 40, height: 40, color: 'black',
+        dx: 0, dy: 0, speed: 5, jumping: false
+    };
+    const platforms = [
+        { x: 150, y: 400, width: 200, height: 20 },
+        { x: 450, y: 300, width: 200, height: 20 },
+        { x: 300, y: 200, width: 200, height: 20 },
+        { x: 100, y: 500, width: 200, height: 20 },
+    ];
+    let coins = [];
+    let enemies = [];
+    let particles = [];
+
+    // Utility functions
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    // Initialize coins and enemies
+    for (let i = 0; i < 5; i++) {
+        coins.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), radius: 10 });
+    }
+    for (let i = 0; i < 3; i++) {
+        enemies.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), width: 30, height: 30, speed: 2 });
+    }
+
+    // Handle player movement
+    window.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') player.dx = -player.speed;
+        if (e.key === 'ArrowRight') player.dx = player.speed;
+        if (e.key === ' ' && !player.jumping) {
+            player.dy = -10;
+            player.jumping = true;
+        }
+    });
+    window.addEventListener('keyup', e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') player.dx = 0;
+    });
+
+    // Collision detection
+    function isColliding(rect1, rect2) {
+        return rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x &&
+               rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y;
+    }
+
+    function update() {
+        // Player physics
+        player.dy += gravity;
+        player.x += player.dx;
+        player.y += player.dy;
+
+        // Screen boundaries
+        if (player.x < 0) player.x = 0;
+        if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+        if (player.y + player.height > canvas.height) {
+            player.y = canvas.height - player.height;
+            player.jumping = false;
+            player.dy = 0;
+        }
+
+        // Platform collision
+        platforms.forEach(platform => {
+            if (isColliding(player, { ...platform, y: platform.y - 5 }) && player.dy > 0) {
+                player.y = platform.y - player.height;
+                player.dy = 0;
+                player.jumping = false;
+            }
+        });
+
+        // Coin collection
+        coins = coins.filter(coin => {
+            if (Math.hypot(player.x - coin.x, player.y - coin.y) < player.width / 2 + coin.radius) {
+                score += 10;
+                createParticles(coin.x, coin.y, coin.radius);
+                return false; // Remove coin
+            }
+            return true;
+        });
+
+        // Enemy collision
+        enemies.forEach(enemy => {
+            enemy.y += Math.sin(Date.now() * 0.002) * 1; // Enemy moves up and down
+            if (isColliding(player, enemy)) {
+                alert("Game Over! Score: " + score);
+                document.location.reload();
+            }
+        });
+
+        // Particle updates
+        particles = particles.filter(p => {
+            p.x += p.dx;
+            p.y += p.dy;
+            p.alpha -= 0.01;
+            return p.alpha > 0;
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw platforms
+        ctx.fillStyle = 'blue';
+        platforms.forEach(platform => ctx.fillRect(platform.x, platform.y, platform.width, platform.height));
+
+        // Draw player
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+
+        // Draw coins
+        ctx.fillStyle = 'yellow';
+        coins.forEach(coin => {
+            ctx.beginPath();
+            ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        // Draw enemies
+        ctx.fillStyle = 'red';
+        enemies.forEach(enemy => ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height));
+
+        // Draw particles
+        particles.forEach(p => {
+            ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        // Draw score
+        ctx.fillStyle = 'black';
+        ctx.font = '20px Arial';
+        ctx.fillText('Score: ' + score, 10, 20);
+    }
+
+    function createParticles(x, y, count) {
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: x, y: y,
+                dx: (Math.random() - 0.5) * 4,
+                dy: (Math.random() - 0.5) * 4,
+                size: Math.random() * 5 + 2,
+                alpha: 1
+            });
+        }
+    }
+
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+</script>
+</body>
+</html>
