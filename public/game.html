@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Platformer Game</title>
+    <title>Platformer Game</title>
     <style>
         body {
             display: flex;
@@ -33,6 +33,10 @@
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+        alert("Canvas or context is not available!");
+    }
 
     // Game variables
     let gravity = 0.5;
@@ -120,38 +124,6 @@
             }
         });
 
-        // Coin collection
-        coins = coins.filter(coin => {
-            if (Math.hypot(player.x - coin.x, player.y - coin.y) < player.width / 2 + coin.radius) {
-                score += 10;
-                createParticles(coin.x, coin.y, 10, '#FFD700');  // Yellow particles for coins
-                return false; // Remove coin
-            }
-            return true;
-        });
-
-        // Enemy collision and stomping
-        enemies = enemies.filter(enemy => {
-            if (isColliding(player, enemy)) {
-                if (player.dy > 0) {  // Stomp enemy if falling
-                    player.dy = -8;  // Bounce back up
-                    score += 50;
-                    createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10, '#FF0000');  // Red particles for enemies
-                    return false;  // Remove enemy
-                } else {
-                    alert("Game Over! Final Score: " + score);
-                    document.location.reload();
-                }
-            }
-            return true;
-        });
-
-        // Check for win condition
-        if (coins.length === 0 && enemies.length === 0) {
-            alert("Level Complete! Score: " + score);
-            initGame();  // Reset the game
-        }
-
         // Update particles
         particles = particles.filter(p => {
             p.x += p.dx;
@@ -187,26 +159,6 @@
         ctx.lineWidth = 3;
         ctx.strokeRect(player.x, player.y, player.width, player.height);
 
-        // Draw coins with cell shading
-        coins.forEach(coin => {
-            ctx.fillStyle = coin.color;
-            ctx.beginPath();
-            ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-        });
-
-        // Draw enemies with cell shading
-        enemies.forEach(enemy => {
-            ctx.fillStyle = enemy.color;
-            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.strokeRect(enemy.x, enemy.y, enemy.width, enemy.height);
-        });
-
         // Draw particles
         particles.forEach(p => {
             ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
@@ -221,4 +173,14 @@
         ctx.fillText('Score: ' + score, 10, 20);
     }
 
-    function createParticles(x, y, count, color) {
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    initGame();  // Start the game initially
+    gameLoop();  // Begin the game loop
+</script>
+</body>
+</html>
