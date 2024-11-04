@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platformer Game</title>
+    <title>Enhanced Platformer Game</title>
     <style>
         body {
             display: flex;
@@ -34,10 +34,6 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    if (!ctx) {
-        alert("Canvas or context is not available!");
-    }
-
     // Game variables
     let gravity = 0.5;
     let score = 0;
@@ -47,7 +43,7 @@
     function initGame() {
         player = {
             x: 50, y: 500, width: 40, height: 40, color: '#FFDD44',
-            dx: 0, dy: 0, speed: 5, jumping: false, fallingThrough: false
+            dx: 0, dy: 0, speed: 5, jumping: false
         };
         particles = [];
         platforms = [
@@ -81,15 +77,9 @@
             player.dy = -10;
             player.jumping = true;
         }
-        if (e.key === 'ArrowDown') {  // Enable falling through platforms
-            player.fallingThrough = true;
-        }
     });
     window.addEventListener('keyup', e => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') player.dx = 0;
-        if (e.key === 'ArrowDown') {  // Disable falling through once down arrow is released
-            player.fallingThrough = false;
-        }
     });
 
     // Collision detection
@@ -115,9 +105,7 @@
 
         // Platform collision
         platforms.forEach(platform => {
-            if (!player.fallingThrough &&
-                isColliding(player, { ...platform, y: platform.y - 5 }) && 
-                player.dy > 0) {
+            if (isColliding(player, { ...platform, y: platform.y - 5 }) && player.dy > 0) {
                 player.y = platform.y - player.height;
                 player.dy = 0;
                 player.jumping = false;
@@ -143,18 +131,17 @@
                     createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10, '#FF0000');  // Red particles for enemies
                     return false;  // Remove enemy
                 } else {
-                    alert("Game Over! Score: " + score);
-                    initGame();  // Reset game on collision
-                    return false;
+                    alert("Game Over! Final Score: " + score);
+                    document.location.reload();
                 }
             }
             return true;
         });
 
-        // Reset game if all enemies and coins are collected
-        if (enemies.length === 0 && coins.length === 0) {
-            alert("Level Complete! Restarting...");
-            initGame();
+        // Check for win condition
+        if (coins.length === 0 && enemies.length === 0) {
+            alert("Level Complete! Score: " + score);
+            initGame();  // Reset the game
         }
 
         // Update particles
@@ -230,4 +217,23 @@
         for (let i = 0; i < count; i++) {
             particles.push({
                 x: x, y: y,
-                dx: (Math
+                dx: (Math.random() - 0.5) * 4,
+                dy: (Math.random() - 0.5) * 4,
+                size: Math.random() * 5 + 2,
+                alpha: 1,
+                color: color
+            });
+        }
+    }
+
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    initGame();  // Start the game initially
+    gameLoop();  // Begin the game loop
+</script>
+</body>
+</html>
