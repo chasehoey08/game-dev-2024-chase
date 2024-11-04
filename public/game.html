@@ -68,7 +68,7 @@
     window.addEventListener('keydown', e => {
         if (e.key === 'ArrowLeft') player.dx = -player.speed;
         if (e.key === 'ArrowRight') player.dx = player.speed;
-        if (e.key === ' ' && !player.jumping) {
+        if (e.key === 'ArrowUp' && !player.jumping) {  // Jump with Up Arrow
             player.dy = -10;
             player.jumping = true;
         }
@@ -111,7 +111,7 @@
         coins = coins.filter(coin => {
             if (Math.hypot(player.x - coin.x, player.y - coin.y) < player.width / 2 + coin.radius) {
                 score += 10;
-                createParticles(coin.x, coin.y, coin.radius);
+                createParticles(coin.x, coin.y, coin.radius, '#FFD700');  // Yellow particles for coins
                 return false; // Remove coin
             }
             return true;
@@ -123,7 +123,7 @@
                 if (player.dy > 0) {  // Stomp enemy if falling
                     player.dy = -8;  // Bounce back up
                     score += 50;
-                    createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10);
+                    createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10, '#FF0000');  // Red particles for enemies
                     return false;  // Remove enemy
                 } else {
                     alert("Game Over! Score: " + score);
@@ -168,12 +168,15 @@
         ctx.lineWidth = 3;
         ctx.strokeRect(player.x, player.y, player.width, player.height);
 
-        // Draw coins
+        // Draw coins with cell shading
         coins.forEach(coin => {
             ctx.fillStyle = coin.color;
             ctx.beginPath();
             ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
             ctx.fill();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 3;
+            ctx.stroke();
         });
 
         // Draw enemies with cell shading
@@ -199,14 +202,15 @@
         ctx.fillText('Score: ' + score, 10, 20);
     }
 
-    function createParticles(x, y, count) {
+    function createParticles(x, y, count, color) {
         for (let i = 0; i < count; i++) {
             particles.push({
                 x: x, y: y,
                 dx: (Math.random() - 0.5) * 4,
                 dy: (Math.random() - 0.5) * 4,
                 size: Math.random() * 5 + 2,
-                alpha: 1
+                alpha: 1,
+                color: color
             });
         }
     }
