@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Platformer Game</title>
+    <title>Platformer Game with Levels</title>
     <style>
         body {
             display: flex;
@@ -25,43 +25,107 @@
             box-shadow: 0px 0px 10px #000;
             border-radius: 10px;
         }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .menu button:hover {
+            background-color: #666;
+        }
     </style>
 </head>
 <body>
-<canvas id="gameCanvas" width="800" height="600"></canvas>
+<div class="menu" id="menu">
+    <h1 style="color: white;">Platformer Game</h1>
+    <button onclick="startGame(1)">Level 1</button>
+    <button onclick="startGame(2)">Level 2</button>
+    <button onclick="startGame(3)">Level 3</button>
+</div>
+<canvas id="gameCanvas" width="800" height="600" style="display: none;"></canvas>
 
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-
+    const menu = document.getElementById('menu');
+    
     // Game variables
     let gravity = 0.5;
     let score = 0;
-    const player = {
-        x: 50, y: 500, width: 40, height: 40, color: '#FFDD44',
-        dx: 0, dy: 0, speed: 5, jumping: false
-    };
-    const platforms = [
-        { x: 150, y: 400, width: 200, height: 20, color: '#FF5733' },
-        { x: 450, y: 300, width: 200, height: 20, color: '#FF5733' },
-        { x: 300, y: 200, width: 200, height: 20, color: '#FF5733' },
-        { x: 100, y: 500, width: 200, height: 20, color: '#FF5733' },
-    ];
-    let coins = [];
-    let enemies = [];
-    let particles = [];
+    let level = 1;
+    let player, platforms, coins, enemies, particles;
 
-    // Utility functions
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
+    // Initialize game objects based on level
+    function initGame(level) {
+        player = { x: 50, y: 500, width: 40, height: 40, color: '#FFDD44', dx: 0, dy: 0, speed: 5, jumping: false };
+        particles = [];
+        score = 0;
+
+        if (level === 1) {
+            platforms = [
+                { x: 150, y: 400, width: 200, height: 20, color: '#FF5733' },
+                { x: 450, y: 300, width: 200, height: 20, color: '#FF5733' },
+            ];
+            coins = [
+                { x: 250, y: 350, radius: 10, color: '#FFD700' },
+                { x: 500, y: 250, radius: 10, color: '#FFD700' }
+            ];
+            enemies = [
+                { x: 600, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' },
+            ];
+        } else if (level === 2) {
+            platforms = [
+                { x: 150, y: 450, width: 200, height: 20, color: '#FF5733' },
+                { x: 350, y: 350, width: 200, height: 20, color: '#FF5733' },
+                { x: 600, y: 250, width: 200, height: 20, color: '#FF5733' }
+            ];
+            coins = [
+                { x: 250, y: 400, radius: 10, color: '#FFD700' },
+                { x: 400, y: 300, radius: 10, color: '#FFD700' },
+                { x: 650, y: 200, radius: 10, color: '#FFD700' }
+            ];
+            enemies = [
+                { x: 500, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' },
+                { x: 200, y: 200, width: 30, height: 30, speed: 2.5, color: '#FF0000' },
+            ];
+        } else if (level === 3) {
+            platforms = [
+                { x: 150, y: 500, width: 150, height: 20, color: '#FF5733' },
+                { x: 300, y: 400, width: 150, height: 20, color: '#FF5733' },
+                { x: 500, y: 300, width: 150, height: 20, color: '#FF5733' },
+                { x: 650, y: 200, width: 150, height: 20, color: '#FF5733' }
+            ];
+            coins = [
+                { x: 170, y: 470, radius: 10, color: '#FFD700' },
+                { x: 320, y: 370, radius: 10, color: '#FFD700' },
+                { x: 520, y: 270, radius: 10, color: '#FFD700' },
+                { x: 670, y: 170, radius: 10, color: '#FFD700' }
+            ];
+            enemies = [
+                { x: 100, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' },
+                { x: 300, y: 200, width: 30, height: 30, speed: 2.5, color: '#FF0000' },
+                { x: 700, y: 150, width: 30, height: 30, speed: 3, color: '#FF0000' }
+            ];
+        }
     }
 
-    // Initialize coins and enemies
-    for (let i = 0; i < 5; i++) {
-        coins.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), radius: 10, color: '#FFD700' });
-    }
-    for (let i = 0; i < 3; i++) {
-        enemies.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), width: 30, height: 30, speed: 2, color: '#FF0000' });
+    // Start the game for the selected level
+    function startGame(selectedLevel) {
+        level = selectedLevel;
+        initGame(level);
+        menu.style.display = 'none';
+        canvas.style.display = 'block';
+        gameLoop();
     }
 
     // Handle player movement
@@ -71,6 +135,9 @@
         if (e.key === 'ArrowUp' && !player.jumping) {  // Jump with Up Arrow
             player.dy = -10;
             player.jumping = true;
+        }
+        if (e.key === 'ArrowDown' && player.dy === 0) {  // Drop through platform
+            player.y += 5;  // Temporarily move player down slightly to pass platform
         }
     });
     window.addEventListener('keyup', e => {
@@ -111,7 +178,7 @@
         coins = coins.filter(coin => {
             if (Math.hypot(player.x - coin.x, player.y - coin.y) < player.width / 2 + coin.radius) {
                 score += 10;
-                createParticles(coin.x, coin.y, coin.radius, '#FFD700');  // Yellow particles for coins
+                createParticles(coin.x, coin.y, 10, '#FFD700');  // Yellow particles for coins
                 return false; // Remove coin
             }
             return true;
@@ -120,108 +187,4 @@
         // Enemy collision and stomping
         enemies = enemies.filter(enemy => {
             if (isColliding(player, enemy)) {
-                if (player.dy > 0) {  // Stomp enemy if falling
-                    player.dy = -8;  // Bounce back up
-                    score += 50;
-                    createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10, '#FF0000');  // Red particles for enemies
-                    return false;  // Remove enemy
-                } else {
-                    alert("Game Over! Score: " + score);
-                    document.location.reload();
-                }
-            }
-            return true;
-        });
-
-        // Particle updates
-        particles = particles.filter(p => {
-            p.x += p.dx;
-            p.y += p.dy;
-            p.alpha -= 0.01;
-            return p.alpha > 0;
-        });
-    }
-
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw background gradient
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(0, "#88CCFF");
-        gradient.addColorStop(1, "#003366");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Draw platforms with cell shading
-        platforms.forEach(platform => {
-            ctx.fillStyle = platform.color;
-            ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
-        });
-
-        // Draw player with cell shading
-        ctx.fillStyle = player.color;
-        ctx.fillRect(player.x, player.y, player.width, player.height);
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(player.x, player.y, player.width, player.height);
-
-        // Draw coins with cell shading
-        coins.forEach(coin => {
-            ctx.fillStyle = coin.color;
-            ctx.beginPath();
-            ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-        });
-
-        // Draw enemies with cell shading
-        enemies.forEach(enemy => {
-            ctx.fillStyle = enemy.color;
-            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.strokeRect(enemy.x, enemy.y, enemy.width, enemy.height);
-        });
-
-        // Draw particles
-        particles.forEach(p => {
-            ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-        });
-
-        // Draw score
-        ctx.fillStyle = 'black';
-        ctx.font = '20px Arial';
-        ctx.fillText('Score: ' + score, 10, 20);
-    }
-
-    function createParticles(x, y, count, color) {
-        for (let i = 0; i < count; i++) {
-            particles.push({
-                x: x, y: y,
-                dx: (Math.random() - 0.5) * 4,
-                dy: (Math.random() - 0.5) * 4,
-                size: Math.random() * 5 + 2,
-                alpha: 1,
-                color: color
-            });
-        }
-    }
-
-    function gameLoop() {
-        update();
-        draw();
-        requestAnimationFrame(gameLoop);
-    }
-
-    gameLoop();
-</script>
-</body>
-</html>
+                if (player.dy > 0) {  //
