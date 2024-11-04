@@ -37,31 +37,36 @@
     // Game variables
     let gravity = 0.5;
     let score = 0;
-    const player = {
-        x: 50, y: 500, width: 40, height: 40, color: '#FFDD44',
-        dx: 0, dy: 0, speed: 5, jumping: false
-    };
-    const platforms = [
-        { x: 150, y: 400, width: 200, height: 20, color: '#FF5733' },
-        { x: 450, y: 300, width: 200, height: 20, color: '#FF5733' },
-        { x: 300, y: 200, width: 200, height: 20, color: '#FF5733' },
-        { x: 100, y: 500, width: 200, height: 20, color: '#FF5733' },
-    ];
-    let coins = [];
-    let enemies = [];
-    let particles = [];
+    let player, platforms, coins, enemies, particles;
 
-    // Utility functions
+    // Initialize or reset game state
+    function initGame() {
+        player = {
+            x: 50, y: 500, width: 40, height: 40, color: '#FFDD44',
+            dx: 0, dy: 0, speed: 5, jumping: false
+        };
+        particles = [];
+        platforms = [
+            { x: 150, y: 400, width: 200, height: 20, color: '#FF5733' },
+            { x: 450, y: 300, width: 200, height: 20, color: '#FF5733' },
+            { x: 300, y: 200, width: 200, height: 20, color: '#FF5733' },
+            { x: 100, y: 500, width: 200, height: 20, color: '#FF5733' },
+        ];
+        coins = [];
+        enemies = [];
+
+        // Initialize coins and enemies randomly
+        for (let i = 0; i < 5; i++) {
+            coins.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), radius: 10, color: '#FFD700' });
+        }
+        for (let i = 0; i < 3; i++) {
+            enemies.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), width: 30, height: 30, speed: 2, color: '#FF0000' });
+        }
+    }
+
+    // Utility function to get random integer between min and max
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
-    }
-
-    // Initialize coins and enemies
-    for (let i = 0; i < 5; i++) {
-        coins.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), radius: 10, color: '#FFD700' });
-    }
-    for (let i = 0; i < 3; i++) {
-        enemies.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), width: 30, height: 30, speed: 2, color: '#FF0000' });
     }
 
     // Handle player movement
@@ -111,7 +116,7 @@
         coins = coins.filter(coin => {
             if (Math.hypot(player.x - coin.x, player.y - coin.y) < player.width / 2 + coin.radius) {
                 score += 10;
-                createParticles(coin.x, coin.y, coin.radius, '#FFD700');  // Yellow particles for coins
+                createParticles(coin.x, coin.y, 10, '#FFD700');  // Yellow particles for coins
                 return false; // Remove coin
             }
             return true;
@@ -126,14 +131,20 @@
                     createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10, '#FF0000');  // Red particles for enemies
                     return false;  // Remove enemy
                 } else {
-                    alert("Game Over! Score: " + score);
+                    alert("Game Over! Final Score: " + score);
                     document.location.reload();
                 }
             }
             return true;
         });
 
-        // Particle updates
+        // Check for win condition
+        if (coins.length === 0 && enemies.length === 0) {
+            alert("Level Complete! Score: " + score);
+            initGame();  // Reset the game
+        }
+
+        // Update particles
         particles = particles.filter(p => {
             p.x += p.dx;
             p.y += p.dy;
@@ -221,7 +232,8 @@
         requestAnimationFrame(gameLoop);
     }
 
-    gameLoop();
+    initGame();  // Start the game initially
+    gameLoop();  // Begin the game loop
 </script>
 </body>
 </html>
