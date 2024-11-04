@@ -7,33 +7,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platformer Game</title>
+    <title>Enhanced Platformer Game</title>
     <style>
-        body { margin: 0; overflow: hidden; }
-        canvas { background-color: #ffffff; display: block; }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+        }
+        canvas {
+            background-color: #333;
+            display: block;
+            border: 5px solid #111;
+            box-shadow: 0px 0px 10px #000;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
-<canvas id="gameCanvas"></canvas>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
 
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 600;
 
     // Game variables
     let gravity = 0.5;
     let score = 0;
     const player = {
-        x: 50, y: 550, width: 40, height: 40, color: 'black',
+        x: 50, y: 500, width: 40, height: 40, color: '#FFDD44',
         dx: 0, dy: 0, speed: 5, jumping: false
     };
     const platforms = [
-        { x: 150, y: 400, width: 200, height: 20 },
-        { x: 450, y: 300, width: 200, height: 20 },
-        { x: 300, y: 200, width: 200, height: 20 },
-        { x: 100, y: 500, width: 200, height: 20 },
+        { x: 150, y: 400, width: 200, height: 20, color: '#FF5733' },
+        { x: 450, y: 300, width: 200, height: 20, color: '#FF5733' },
+        { x: 300, y: 200, width: 200, height: 20, color: '#FF5733' },
+        { x: 100, y: 500, width: 200, height: 20, color: '#FF5733' },
     ];
     let coins = [];
     let enemies = [];
@@ -46,10 +58,10 @@
 
     // Initialize coins and enemies
     for (let i = 0; i < 5; i++) {
-        coins.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), radius: 10 });
+        coins.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), radius: 10, color: '#FFD700' });
     }
     for (let i = 0; i < 3; i++) {
-        enemies.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), width: 30, height: 30, speed: 2 });
+        enemies.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), width: 30, height: 30, speed: 2, color: '#FF0000' });
     }
 
     // Handle player movement
@@ -105,13 +117,20 @@
             return true;
         });
 
-        // Enemy collision
-        enemies.forEach(enemy => {
-            enemy.y += Math.sin(Date.now() * 0.002) * 1; // Enemy moves up and down
+        // Enemy collision and stomping
+        enemies = enemies.filter(enemy => {
             if (isColliding(player, enemy)) {
-                alert("Game Over! Score: " + score);
-                document.location.reload();
+                if (player.dy > 0) {  // Stomp enemy if falling
+                    player.dy = -8;  // Bounce back up
+                    score += 50;
+                    createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10);
+                    return false;  // Remove enemy
+                } else {
+                    alert("Game Over! Score: " + score);
+                    document.location.reload();
+                }
             }
+            return true;
         });
 
         // Particle updates
@@ -126,25 +145,45 @@
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw platforms
-        ctx.fillStyle = 'blue';
-        platforms.forEach(platform => ctx.fillRect(platform.x, platform.y, platform.width, platform.height));
+        // Draw background gradient
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, "#88CCFF");
+        gradient.addColorStop(1, "#003366");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw player
+        // Draw platforms with cell shading
+        platforms.forEach(platform => {
+            ctx.fillStyle = platform.color;
+            ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
+        });
+
+        // Draw player with cell shading
         ctx.fillStyle = player.color;
         ctx.fillRect(player.x, player.y, player.width, player.height);
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(player.x, player.y, player.width, player.height);
 
         // Draw coins
-        ctx.fillStyle = 'yellow';
         coins.forEach(coin => {
+            ctx.fillStyle = coin.color;
             ctx.beginPath();
             ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
             ctx.fill();
         });
 
-        // Draw enemies
-        ctx.fillStyle = 'red';
-        enemies.forEach(enemy => ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height));
+        // Draw enemies with cell shading
+        enemies.forEach(enemy => {
+            ctx.fillStyle = enemy.color;
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        });
 
         // Draw particles
         particles.forEach(p => {
