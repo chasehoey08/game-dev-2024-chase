@@ -124,6 +124,39 @@
             }
         });
 
+        // Coin collection
+        coins = coins.filter(coin => {
+            if (Math.hypot(player.x - coin.x, player.y - coin.y) < player.width / 2 + coin.radius) {
+                score += 10;
+                createParticles(coin.x, coin.y, 10, '#FFD700');  // Yellow particles for coins
+                return false; // Remove coin
+            }
+            return true;
+        });
+
+        // Enemy collision and stomping
+        enemies = enemies.filter(enemy => {
+            if (isColliding(player, enemy)) {
+                if (player.dy > 0) {  // Stomp enemy if falling
+                    player.dy = -8;  // Bounce back up
+                    score += 50;
+                    createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10, '#FF0000');  // Red particles for enemies
+                    return false;  // Remove enemy
+                } else {
+                    alert("Game Over! Score: " + score);
+                    initGame();  // Reset game on collision
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        // Reset game if all enemies and coins are collected
+        if (enemies.length === 0 && coins.length === 0) {
+            alert("Level Complete! Restarting...");
+            initGame();
+        }
+
         // Update particles
         particles = particles.filter(p => {
             p.x += p.dx;
@@ -159,6 +192,26 @@
         ctx.lineWidth = 3;
         ctx.strokeRect(player.x, player.y, player.width, player.height);
 
+        // Draw coins with cell shading
+        coins.forEach(coin => {
+            ctx.fillStyle = coin.color;
+            ctx.beginPath();
+            ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        });
+
+        // Draw enemies with cell shading
+        enemies.forEach(enemy => {
+            ctx.fillStyle = enemy.color;
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        });
+
         // Draw particles
         particles.forEach(p => {
             ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
@@ -173,14 +226,8 @@
         ctx.fillText('Score: ' + score, 10, 20);
     }
 
-    function gameLoop() {
-        update();
-        draw();
-        requestAnimationFrame(gameLoop);
-    }
-
-    initGame();  // Start the game initially
-    gameLoop();  // Begin the game loop
-</script>
-</body>
-</html>
+    function createParticles(x, y, count, color) {
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: x, y: y,
+                dx: (Math
