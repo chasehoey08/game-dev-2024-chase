@@ -73,47 +73,48 @@
 
         if (level === 1) {
             platforms = [
-                { x: 150, y: 400, width: 200, height: 20, color: '#FF5733' },
-                { x: 450, y: 300, width: 200, height: 20, color: '#FF5733' },
+                { x: 100, y: 400, width: 200, height: 20, color: '#FF5733' },
+                { x: 450, y: 350, width: 200, height: 20, color: '#FF5733' },
+                { x: 300, y: 250, width: 150, height: 20, color: '#FF5733' }
             ];
             coins = [
-                { x: 250, y: 350, radius: 10, color: '#FFD700' },
-                { x: 500, y: 250, radius: 10, color: '#FFD700' }
+                { x: 150, y: 370, radius: 10, color: '#FFD700' },
+                { x: 500, y: 320, radius: 10, color: '#FFD700' }
             ];
             enemies = [
-                { x: 600, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' },
+                { x: 600, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' }
             ];
         } else if (level === 2) {
             platforms = [
-                { x: 150, y: 450, width: 200, height: 20, color: '#FF5733' },
+                { x: 100, y: 450, width: 200, height: 20, color: '#FF5733' },
                 { x: 350, y: 350, width: 200, height: 20, color: '#FF5733' },
                 { x: 600, y: 250, width: 200, height: 20, color: '#FF5733' }
             ];
             coins = [
-                { x: 250, y: 400, radius: 10, color: '#FFD700' },
-                { x: 400, y: 300, radius: 10, color: '#FFD700' },
-                { x: 650, y: 200, radius: 10, color: '#FFD700' }
+                { x: 150, y: 420, radius: 10, color: '#FFD700' },
+                { x: 400, y: 320, radius: 10, color: '#FFD700' },
+                { x: 650, y: 220, radius: 10, color: '#FFD700' }
             ];
             enemies = [
                 { x: 500, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' },
-                { x: 200, y: 200, width: 30, height: 30, speed: 2.5, color: '#FF0000' },
+                { x: 250, y: 250, width: 30, height: 30, speed: 2.5, color: '#FF0000' }
             ];
         } else if (level === 3) {
             platforms = [
-                { x: 150, y: 500, width: 150, height: 20, color: '#FF5733' },
+                { x: 100, y: 500, width: 150, height: 20, color: '#FF5733' },
                 { x: 300, y: 400, width: 150, height: 20, color: '#FF5733' },
                 { x: 500, y: 300, width: 150, height: 20, color: '#FF5733' },
                 { x: 650, y: 200, width: 150, height: 20, color: '#FF5733' }
             ];
             coins = [
-                { x: 170, y: 470, radius: 10, color: '#FFD700' },
-                { x: 320, y: 370, radius: 10, color: '#FFD700' },
-                { x: 520, y: 270, radius: 10, color: '#FFD700' },
-                { x: 670, y: 170, radius: 10, color: '#FFD700' }
+                { x: 150, y: 470, radius: 10, color: '#FFD700' },
+                { x: 350, y: 370, radius: 10, color: '#FFD700' },
+                { x: 550, y: 270, radius: 10, color: '#FFD700' },
+                { x: 700, y: 170, radius: 10, color: '#FFD700' }
             ];
             enemies = [
-                { x: 100, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' },
-                { x: 300, y: 200, width: 30, height: 30, speed: 2.5, color: '#FF0000' },
+                { x: 150, y: 500, width: 30, height: 30, speed: 2, color: '#FF0000' },
+                { x: 400, y: 200, width: 30, height: 30, speed: 2.5, color: '#FF0000' },
                 { x: 700, y: 150, width: 30, height: 30, speed: 3, color: '#FF0000' }
             ];
         }
@@ -187,4 +188,4 @@
         // Enemy collision and stomping
         enemies = enemies.filter(enemy => {
             if (isColliding(player, enemy)) {
-                if (player.dy > 0) {  //
+                if
