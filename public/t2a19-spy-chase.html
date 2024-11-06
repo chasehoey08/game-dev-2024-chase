@@ -1,1 +1,56 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encryption</title>
+</head>
+<body>
+    <h1 align="center">Text Encryption and Decryption</h1>
+
+    <!-- Input textarea for original text -->
+    <textarea id="myArea01" rows="4" cols="70">Hello, how are you?</textarea><br>
+    
+    <!-- Encrypt button -->
+    <input type="button" value="Encrypt" onclick="encryptText()"><br><br>
+    
+    <!-- Output textarea for encrypted text -->
+    <textarea id="myArea02" rows="4" cols="70"></textarea><br><br>
+    
+    <!-- Decrypt button (not functional in this example) -->
+    <input type="button" value="Decrypt" onclick="alert('Sorry, decryption is not implemented!')"><br><br>
+    
+    <!-- Placeholder for decrypted text -->
+    <textarea id="myArea03" rows="4" cols="70"></textarea><br>
+
+    <script>
+        function encryptText() {
+            // Get the value of the input textarea
+            let myString = document.getElementById('myArea01').value.toLowerCase();
+            
+            // Convert the string to an array to modify characters
+            let myTemp = myString.split('');
+            
+            // Loop through each character and replace certain letters
+            for (let myLoop = 0; myLoop < myTemp.length; myLoop++) {
+                if (myTemp[myLoop] === 'e') {
+                    myTemp[myLoop] = '3';
+                } else if (myTemp[myLoop] === 'h') {
+                    myTemp[myLoop] = '#';
+                } else if (myTemp[myLoop] === 'o') {
+                    myTemp[myLoop] = '0';
+                } else if (myTemp[myLoop] === 'a') {
+                    myTemp[myLoop] = '4';
+                }
+            }
+
+            // Join the array back into a string and set it in the output textarea
+            document.getElementById('myArea02').value = myTemp.join('');
+        }
+    </script>
+</body>
+</html>
