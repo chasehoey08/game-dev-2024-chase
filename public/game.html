@@ -7,233 +7,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Platformer Game</title>
+    <title>Geometry Dash Clone</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            background-color: #87CEEB; /* Sky blue background */
             overflow: hidden;
-            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            font-family: Arial, sans-serif;
         }
-        canvas {
-            background-color: #333;
-            display: block;
-            border: 5px solid #111;
-            box-shadow: 0px 0px 10px #000;
+        .game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #3498db;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            padding: 10px;
+        }
+        #gameCanvas {
+            background-color: #3498db; /* Blue background */
+            border: 2px solid #333;
             border-radius: 10px;
         }
     </style>
 </head>
 <body>
-<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<div class="game-container">
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+</div>
 
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Game variables
-    let gravity = 0.5;
+    // Game settings
+    const gravity = 0.5;
+    const jumpPower = -10;
+    let isJumping = false;
+    let gameSpeed = 3;
     let score = 0;
-    let player, platforms, coins, enemies, particles;
+    let particles = [];
+    let gameOver = false;
 
-    // Initialize or reset game state
-    function initGame() {
-        player = {
-            x: 50, y: 500, width: 40, height: 40, color: '#FFDD44',
-            dx: 0, dy: 0, speed: 5, jumping: false
-        };
-        particles = [];
-        platforms = [
-            { x: 150, y: 400, width: 200, height: 20, color: '#FF5733' },
-            { x: 450, y: 300, width: 200, height: 20, color: '#FF5733' },
-            { x: 300, y: 200, width: 200, height: 20, color: '#FF5733' },
-            { x: 100, y: 500, width: 200, height: 20, color: '#FF5733' },
-        ];
-        coins = [];
-        enemies = [];
+    // Cube character settings
+    const cube = {
+        x: 50,
+        y: canvas.height - 60,
+        width: 30,
+        height: 30,
+        color: "#2ecc71", // Green
+        dy: 0
+    };
 
-        // Initialize coins and enemies randomly
-        for (let i = 0; i < 5; i++) {
-            coins.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), radius: 10, color: '#FFD700' });
-        }
-        for (let i = 0; i < 3; i++) {
-            enemies.push({ x: getRandomInt(100, 700), y: getRandomInt(50, 550), width: 30, height: 30, speed: 2, color: '#FF0000' });
-        }
+    // Spike obstacle settings
+    const spikes = [];
+    const spikeWidth = 20;
+    const spikeHeight = 30;
+    const spikeGap = 300;
+
+    function addSpike() {
+        const spikeX = canvas.width + Math.random() * 100;
+        spikes.push({ x: spikeX, y: canvas.height - spikeHeight });
     }
 
-    // Utility function to get random integer between min and max
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
+    function updateSpikes() {
+        for (let i = spikes.length - 1; i >= 0; i--) {
+            spikes[i].x -= gameSpeed;
 
-    // Handle player movement
-    window.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft') player.dx = -player.speed;
-        if (e.key === 'ArrowRight') player.dx = player.speed;
-        if (e.key === 'ArrowUp' && !player.jumping) {  // Jump with Up Arrow
-            player.dy = -10;
-            player.jumping = true;
-        }
-    });
-    window.addEventListener('keyup', e => {
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') player.dx = 0;
-    });
-
-    // Collision detection
-    function isColliding(rect1, rect2) {
-        return rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x &&
-               rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y;
-    }
-
-    function update() {
-        // Player physics
-        player.dy += gravity;
-        player.x += player.dx;
-        player.y += player.dy;
-
-        // Screen boundaries
-        if (player.x < 0) player.x = 0;
-        if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-        if (player.y + player.height > canvas.height) {
-            player.y = canvas.height - player.height;
-            player.jumping = false;
-            player.dy = 0;
-        }
-
-        // Platform collision
-        platforms.forEach(platform => {
-            if (isColliding(player, { ...platform, y: platform.y - 5 }) && player.dy > 0) {
-                player.y = platform.y - player.height;
-                player.dy = 0;
-                player.jumping = false;
+            // Remove off-screen spikes and add a new one
+            if (spikes[i].x + spikeWidth < 0) {
+                spikes.splice(i, 1);
+                score++;
+                if (score % 5 === 0) gameSpeed += 0.5; // Increase speed every 5 points
+                addSpike();
             }
-        });
-
-        // Coin collection
-        coins = coins.filter(coin => {
-            if (Math.hypot(player.x - coin.x, player.y - coin.y) < player.width / 2 + coin.radius) {
-                score += 10;
-                createParticles(coin.x, coin.y, 10, '#FFD700');  // Yellow particles for coins
-                return false; // Remove coin
-            }
-            return true;
-        });
-
-        // Enemy collision and stomping
-        enemies = enemies.filter(enemy => {
-            if (isColliding(player, enemy)) {
-                if (player.dy > 0) {  // Stomp enemy if falling
-                    player.dy = -8;  // Bounce back up
-                    score += 50;
-                    createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 10, '#FF0000');  // Red particles for enemies
-                    return false;  // Remove enemy
-                } else {
-                    alert("Game Over! Final Score: " + score);
-                    document.location.reload();
-                }
-            }
-            return true;
-        });
-
-        // Check for win condition
-        if (coins.length === 0 && enemies.length === 0) {
-            alert("Level Complete! Score: " + score);
-            initGame();  // Reset the game
         }
-
-        // Update particles
-        particles = particles.filter(p => {
-            p.x += p.dx;
-            p.y += p.dy;
-            p.alpha -= 0.01;
-            return p.alpha > 0;
-        });
     }
 
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw background gradient
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(0, "#88CCFF");
-        gradient.addColorStop(1, "#003366");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Draw platforms with cell shading
-        platforms.forEach(platform => {
-            ctx.fillStyle = platform.color;
-            ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
-        });
-
-        // Draw player with cell shading
-        ctx.fillStyle = player.color;
-        ctx.fillRect(player.x, player.y, player.width, player.height);
-        ctx.strokeStyle = "black";
+    function drawCube() {
+        // Cell-shaded effect
+        ctx.fillStyle = cube.color;
+        ctx.fillRect(cube.x, cube.y, cube.width, cube.height);
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
         ctx.lineWidth = 3;
-        ctx.strokeRect(player.x, player.y, player.width, player.height);
-
-        // Draw coins with cell shading
-        coins.forEach(coin => {
-            ctx.fillStyle = coin.color;
-            ctx.beginPath();
-            ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-        });
-
-        // Draw enemies with cell shading
-        enemies.forEach(enemy => {
-            ctx.fillStyle = enemy.color;
-            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.strokeRect(enemy.x, enemy.y, enemy.width, enemy.height);
-        });
-
-        // Draw particles
-        particles.forEach(p => {
-            ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-        });
-
-        // Draw score
-        ctx.fillStyle = 'black';
-        ctx.font = '20px Arial';
-        ctx.fillText('Score: ' + score, 10, 20);
+        ctx.strokeRect(cube.x, cube.y, cube.width, cube.height);
     }
 
-    function createParticles(x, y, count, color) {
-        for (let i = 0; i < count; i++) {
-            particles.push({
-                x: x, y: y,
-                dx: (Math.random() - 0.5) * 4,
-                dy: (Math.random() - 0.5) * 4,
-                size: Math.random() * 5 + 2,
-                alpha: 1,
-                color: color
-            });
+    function drawSpikes() {
+        ctx.fillStyle = "#e74c3c"; // Red for spikes
+        for (const spike of spikes) {
+            ctx.beginPath();
+            ctx.moveTo(spike.x, spike.y);
+            ctx.lineTo(spike.x + spikeWidth / 2, spike.y - spikeHeight);
+            ctx.lineTo(spike.x + spikeWidth, spike.y);
+            ctx.closePath();
+            ctx.fill();
+            // Cell-shaded outline
+            ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+    }
+
+    function handleJump() {
+        if (!isJumping && cube.y + cube.height >= canvas.height - 10) {
+            isJumping = true;
+            cube.dy = jumpPower;
+        }
+    }
+
+    function updateCube() {
+        // Apply gravity and jump
+        cube.dy += gravity;
+        cube.y += cube.dy;
+
+        // Stop jumping when landing
+        if (cube.y + cube.height > canvas.height) {
+            cube.y = canvas.height - cube.height;
+            isJumping = false;
+        }
+    }
+
+    function detectCollision() {
+        for (const spike of spikes) {
+            if (
+                cube.x < spike.x + spikeWidth &&
+                cube.x + cube.width > spike.x &&
+                cube.y + cube.height > spike.y
+            ) {
+                triggerGameOver();
+            }
+        }
+    }
+
+    function triggerGameOver() {
+        gameOver = true;
+        for (let i = 0; i < 20; i++) {
+            createParticle(cube.x + cube.width / 2, cube.y + cube.height / 2);
+        }
+        setTimeout(() => alert("Game Over! Score: " + score), 100);
+        setTimeout(() => document.location.reload(), 1000);
+    }
+
+    function createParticle(x, y) {
+        particles.push({
+            x: x,
+            y: y,
+            dx: (Math.random() - 0.5) * 4,
+            dy: (Math.random() - 0.5) * 4,
+            size: Math.random() * 4 + 2,
+            color: "#e74c3c",
+            life: 60
+        });
+    }
+
+    function updateParticles() {
+        particles = particles.filter(p => p.life > 0);
+        for (const particle of particles) {
+            particle.x += particle.dx;
+            particle.y += particle.dy;
+            particle.life -= 1;
+        }
+    }
+
+    function drawParticles() {
+        for (const particle of particles) {
+            ctx.fillStyle = particle.color;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
 
     function gameLoop() {
-        update();
-        draw();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (!gameOver) {
+            updateCube();
+            updateSpikes();
+            detectCollision();
+        }
+        updateParticles();
+
+        drawCube();
+        drawSpikes();
+        drawParticles();
+
         requestAnimationFrame(gameLoop);
     }
 
-    initGame();  // Start the game initially
-    gameLoop();  // Begin the game loop
+    // Initialize spikes
+    for (let i = 0; i < 3; i++) {
+        addSpike();
+    }
+
+    // Event listener for jumping
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !gameOver) {
+            handleJump();
+        }
+    });
+
+    gameLoop();
 </script>
+
 </body>
 </html>
