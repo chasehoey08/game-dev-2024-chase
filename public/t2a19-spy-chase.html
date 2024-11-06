@@ -7,25 +7,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Encryption</title>
+    <title>Text Encryption and Decryption</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+            margin: 0;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #4A90E2;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            resize: vertical;
+        }
+
+        input[type="button"] {
+            width: 150px;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4A90E2;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="button"]:hover {
+            background-color: #357ABD;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .textarea-container {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1 align="center">Text Encryption and Decryption</h1>
+    <div class="container">
+        <h1>Text Encryption and Decryption</h1>
 
-    <!-- Input textarea for original text -->
-    <textarea id="myArea01" rows="4" cols="70">Hello, how are you?</textarea><br>
-    
-    <!-- Encrypt button -->
-    <input type="button" value="Encrypt" onclick="encryptText()"><br><br>
-    
-    <!-- Output textarea for encrypted text -->
-    <textarea id="myArea02" rows="4" cols="70"></textarea><br><br>
-    
-    <!-- Decrypt button (not functional in this example) -->
-    <input type="button" value="Decrypt" onclick="alert('Sorry, decryption is not implemented!')"><br><br>
-    
-    <!-- Placeholder for decrypted text -->
-    <textarea id="myArea03" rows="4" cols="70"></textarea><br>
+        <!-- Input textarea for original text -->
+        <div class="textarea-container">
+            <label for="myArea01">Original Text:</label><br>
+            <textarea id="myArea01" rows="4">Hello, how are you?</textarea>
+        </div>
+
+        <!-- Encrypt button -->
+        <input type="button" value="Encrypt" onclick="encryptText()"><br>
+
+        <!-- Output textarea for encrypted text -->
+        <div class="textarea-container">
+            <label for="myArea02">Encrypted Text:</label><br>
+            <textarea id="myArea02" rows="4"></textarea>
+        </div>
+
+        <!-- Decrypt button -->
+        <input type="button" value="Decrypt" onclick="decryptText()"><br>
+
+        <!-- Output textarea for decrypted text -->
+        <div class="textarea-container">
+            <label for="myArea03">Decrypted Text:</label><br>
+            <textarea id="myArea03" rows="4"></textarea>
+        </div>
+    </div>
 
     <script>
         function encryptText() {
@@ -35,7 +102,7 @@
             // Convert the string to an array to modify characters
             let myTemp = myString.split('');
             
-            // Loop through each character and replace certain letters
+            // Loop through each character and replace certain letters for encryption
             for (let myLoop = 0; myLoop < myTemp.length; myLoop++) {
                 if (myTemp[myLoop] === 'e') {
                     myTemp[myLoop] = '3';
@@ -50,6 +117,30 @@
 
             // Join the array back into a string and set it in the output textarea
             document.getElementById('myArea02').value = myTemp.join('');
+        }
+
+        function decryptText() {
+            // Get the value of the encrypted textarea
+            let myString = document.getElementById('myArea02').value;
+            
+            // Convert the string to an array to modify characters
+            let myTemp = myString.split('');
+            
+            // Loop through each character and replace symbols with original letters for decryption
+            for (let myLoop = 0; myLoop < myTemp.length; myLoop++) {
+                if (myTemp[myLoop] === '3') {
+                    myTemp[myLoop] = 'e';
+                } else if (myTemp[myLoop] === '#') {
+                    myTemp[myLoop] = 'h';
+                } else if (myTemp[myLoop] === '0') {
+                    myTemp[myLoop] = 'o';
+                } else if (myTemp[myLoop] === '4') {
+                    myTemp[myLoop] = 'a';
+                }
+            }
+
+            // Join the array back into a string and set it in the decrypted textarea
+            document.getElementById('myArea03').value = myTemp.join('');
         }
     </script>
 </body>
