@@ -1,1 +1,166 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Drawing Example</title>
+    <style>
+        /* Basic reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Body styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #83a4d4, #b6fbff);
+            color: #333;
+        }
+
+        /* Container for the canvas and buttons */
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        /* Header styling */
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        /* Canvas styling */
+        canvas {
+            border: 1px solid #333;
+            background-color: #fafafa;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            margin-bottom: 15px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Button styling */
+        input[type="button"] {
+            display: block;
+            width: calc(100% - 40px);
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Button hover and active effects */
+        input[type="button"]:hover {
+            background-color: #2980b9;
+        }
+
+        input[type="button"]:active {
+            transform: scale(0.98);
+        }
+
+        /* Info text */
+        p {
+            margin-bottom: 15px;
+            font-size: 1em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Canvas Drawing Example</h2>
+    <p>Click the buttons below to create various shapes and designs on the canvas.</p>
+
+    <!-- Canvas element -->
+    <canvas id="myCanvas" width="500" height="500"></canvas><br>
+
+    <!-- Buttons to draw on canvas -->
+    <input type="button" value=". lineTo(30, 200)" onclick="drawLine()">
+    <input type="button" value=". arc(95, 50, 40, 0, 2 * Math.PI)" onclick="drawArc()">
+    <input type="button" value=". fillText('Hello World', 400, 100)" onclick="drawText()">
+    <input type="button" value=". quadraticCurveTo(100, 220, 240, 110)" onclick="drawQuadraticCurve()">
+    <input type="button" value=". createLinearGradient(100, 300, 200, 400)" onclick="drawGradient()">
+</div>
+
+<script>
+    // Set up canvas and context
+    const canvas = document.getElementById("myCanvas");
+    const myContext = canvas.getContext("2d");
+
+    // Draw a line
+    function drawLine() {
+        myContext.beginPath();
+        myContext.lineWidth = 1;
+        myContext.moveTo(20, 10);
+        myContext.lineTo(30, 200);
+        myContext.stroke();
+    }
+
+    // Draw an arc
+    function drawArc() {
+        myContext.beginPath();
+        myContext.lineWidth = 10;
+        myContext.strokeStyle = "blue";
+        myContext.arc(95, 50, 40, 0, 2 * Math.PI);
+        myContext.stroke();
+    }
+
+    // Draw text, then rotate and draw again
+    function drawText() {
+        myContext.font = "20px Arial";
+        myContext.fillText("Hello World", 400, 100);
+        
+        // Translate and rotate for rotated text
+        myContext.save(); // Save the current state
+        myContext.translate(400, 100);
+        myContext.rotate(60 * Math.PI / 180);
+        myContext.fillText("Hello World", 10, 0);
+        myContext.restore(); // Restore the original state
+    }
+
+    // Draw a quadratic curve
+    function drawQuadraticCurve() {
+        myContext.beginPath();
+        myContext.moveTo(300, 100);
+        myContext.quadraticCurveTo(100, 220, 240, 110);
+        myContext.stroke();
+    }
+
+    // Draw a rectangle with a linear gradient fill
+    function drawGradient() {
+        const myGradient = myContext.createLinearGradient(100, 300, 200, 400);
+        myGradient.addColorStop(0, "red");
+        myGradient.addColorStop(0.5, "blue");
+        myGradient.addColorStop(1, "yellow");
+        
+        myContext.fillStyle = myGradient;
+        myContext.fillRect(100, 300, 100, 100);
+    }
+</script>
+
+</body>
+</html>
