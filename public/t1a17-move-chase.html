@@ -8,19 +8,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Move Image Right</title>
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    }
+
+    h1 {
+      color: #333;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .button-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    input[type="button"] {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="button"]:hover {
+      background-color: #0056b3;
+    }
+
+    img {
+      position: relative;
+      width: 100px;
+      height: 80px;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
 </head>
 <body>
-  <h1 align="center">T117-Move-Fred</h1>
-  
-  <!-- Button to move the image right -->
-  <input type="button" id="myButton02" value="Image Right" onclick="moveImageRight()">
-  
-  <!-- Button to automate the movement -->
-  <input type="button" value="Auto Move Right" onclick="autoMoveRight()"><br><br>
+  <h1>Move the Image</h1>
+
+  <div class="button-container">
+    <!-- Button to move the image right -->
+    <input type="button" id="myButton02" value="Image Right" onclick="moveImageRight()">
+    <!-- Button to automate the movement -->
+    <input type="button" value="Auto Move Right" onclick="autoMoveRight()">
+  </div>
   
   <!-- Image to be moved -->
-  <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="myImage01.jpg" alt="My Image">
-  
+  <img id="myImage01" src="myImage01.jpg" alt="My Image">
+
   <script>
     // Global variable for interval
     let myClock02;
