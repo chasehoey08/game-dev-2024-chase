@@ -1,1 +1,45 @@
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Move Image Right</title>
+</head>
+<body>
+  <h1 align="center">T117-Move-Fred</h1>
+  
+  <!-- Button to move the image right -->
+  <input type="button" id="myButton02" value="Image Right" onclick="moveImageRight()">
+  
+  <!-- Button to automate the movement -->
+  <input type="button" value="Auto Move Right" onclick="autoMoveRight()"><br><br>
+  
+  <!-- Image to be moved -->
+  <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="myImage01.jpg" alt="My Image">
+  
+  <script>
+    // Global variable for interval
+    let myClock02;
+
+    // Function to move the image right
+    function moveImageRight() {
+      const img = document.getElementById('myImage01');
+      img.style.left = (parseInt(img.style.left, 10) || 0) + 10 + 'px';
+    }
+
+    // Function to automate the movement
+    function autoMoveRight() {
+      const img = document.getElementById('myImage01');
+      img.style.left = '0px'; // Reset the position to start
+      clearInterval(myClock02); // Clear any existing interval
+      myClock02 = setInterval(() => {
+        document.getElementById('myButton02').click(); // Simulate a button click
+      }, 30); // Activate click every 30 milliseconds
+    }
+  </script>
+</body>
+</html>
