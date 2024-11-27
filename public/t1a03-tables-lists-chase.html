@@ -7,19 +7,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Table and Lists</title>
+    <title>Countries and Cities</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
             color: #333;
-            line-height: 1.6;
             margin: 20px;
         }
 
         h1 {
-            color: #4CAF50;
             text-align: center;
+            color: #4CAF50;
+        }
+
+        .country-list, .nested-cities {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .nested-cities {
+            list-style-type: decimal;
+            margin-left: 20px;
+        }
+
+        .country-image, .city-image {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .nested-cities .list-item {
+            margin-left: 30px;
         }
 
         table {
@@ -42,155 +68,72 @@
         tr:hover {
             background-color: #f1f1f1;
         }
-
-        ul, ol {
-            margin: 20px 0;
-            padding-left: 20px;
-        }
-
-        ul {
-            list-style-type: disc;
-        }
-
-        ol {
-            list-style-type: decimal;
-        }
-
-        .nested-list {
-            list-style-type: circle;
-            margin-left: 20px;
-        }
-
-        .nested-cities {
-            list-style-type: decimal;
-            margin-left: 40px;
-        }
-
-        dt {
-            font-weight: bold;
-            color: #4CAF50;
-        }
-
-        dd {
-            margin-left: 20px;
-            color: #555;
-        }
-
-        .image {
-            width: 100px;
-            height: auto;
-        }
-
-        a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
+    <h1>Countries and Cities</h1>
 
-<h1>T1A03-Tables-Lists-Fred</h1>
-
-<h2>2x2 Table</h2>
-<table>
-    <tr>
-        <th>Header 1</th>
-        <th>Header 2</th>
-    </tr>
-    <tr>
-        <td>A</td>
-        <td>B</td>
-    </tr>
-    <tr>
-        <td>C</td>
-        <td>D</td>
-    </tr>
-</table>
-
-<h2>3x4 Animal Table</h2>
-<table>
-    <tr>
-        <th>#</th>
-        <th>Animal</th>
-        <th>Image</th>
-        <th>Link</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>Dog</td>
-        <td><img class="image" src="https://via.placeholder.com/100" alt="Image of a Dog"></td>
-        <td><a href="https://www.akc.org/dog-breeds/" aria-label="Learn more about dog breeds">More about Dogs</a></td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Cat</td>
-        <td><img class="image" src="https://via.placeholder.com/100" alt="Image of a Cat"></td>
-        <td><a href="https://cats.com/" aria-label="Learn more about cats">More about Cats</a></td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>Rabbit</td>
-        <td><img class="image" src="https://via.placeholder.com/100" alt="Image of a Rabbit"></td>
-        <td><a href="https://rabbit.org/" aria-label="Learn more about rabbits">More about Rabbits</a></td>
-    </tr>
-</table>
-
-<h2>Unordered List of Toys</h2>
-<ul>
-    <li>Toy Car</li>
-    <li>Teddy Bear</li>
-    <li>Building Blocks</li>
-</ul>
-
-<h2>Ordered List of Toys</h2>
-<ol>
-    <li>Toy Car</li>
-    <li>Teddy Bear</li>
-    <li>Building Blocks</li>
-</ol>
-
-<h2>Definition List</h2>
-<dl>
-    <dt>HTML</dt>
-    <dd>A language for creating web pages.</dd>
-    <dt>CSS</dt>
-    <dd>A language for styling web pages.</dd>
-    <dt>JavaScript</dt>
-    <dd>A language for making web pages interactive.</dd>
-</dl>
-
-<h2>Nested Lists of Countries and Cities</h2>
-<ul>
-    <li>Countries
-        <ul class="nested-list">
-            <li>USA
-                <ol class="nested-cities">
-                    <li>New York</li>
-                    <li>Los Angeles</li>
-                    <li>Chicago</li>
-                </ol>
-            </li>
-            <li>Canada
-                <ol class="nested-cities">
-                    <li>Toronto</li>
-                    <li>Vancouver</li>
-                    <li>Montreal</li>
-                </ol>
-            </li>
-            <li>Australia
-                <ol class="nested-cities">
-                    <li>Sydney</li>
-                    <li>Melbourne</li>
-                    <li>Brisbane</li>
-                </ol>
-            </li>
-        </ul>
-    </li>
-</ul>
-
+    <ul class="country-list">
+        <li>
+            <div class="list-item">
+                <img class="country-image" src="https://via.placeholder.com/50?text=USA" alt="USA Flag">
+                <strong>USA</strong>
+            </div>
+            <ol class="nested-cities">
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=NY" alt="New York">
+                    New York
+                </li>
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=LA" alt="Los Angeles">
+                    Los Angeles
+                </li>
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=CHI" alt="Chicago">
+                    Chicago
+                </li>
+            </ol>
+        </li>
+        <li>
+            <div class="list-item">
+                <img class="country-image" src="https://via.placeholder.com/50?text=Canada" alt="Canada Flag">
+                <strong>Canada</strong>
+            </div>
+            <ol class="nested-cities">
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=TOR" alt="Toronto">
+                    Toronto
+                </li>
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=VAN" alt="Vancouver">
+                    Vancouver
+                </li>
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=MON" alt="Montreal">
+                    Montreal
+                </li>
+            </ol>
+        </li>
+        <li>
+            <div class="list-item">
+                <img class="country-image" src="https://via.placeholder.com/50?text=Australia" alt="Australia Flag">
+                <strong>Australia</strong>
+            </div>
+            <ol class="nested-cities">
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=SYD" alt="Sydney">
+                    Sydney
+                </li>
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=MEL" alt="Melbourne">
+                    Melbourne
+                </li>
+                <li class="list-item">
+                    <img class="city-image" src="https://via.placeholder.com/50?text=BRI" alt="Brisbane">
+                    Brisbane
+                </li>
+            </ol>
+        </li>
+    </ul>
 </body>
 </html>
