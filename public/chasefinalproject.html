@@ -1,119 +1,158 @@
 
 
-<script>
-   // global variables here
-   let myGlobalX = 0;
-   let myClock;
-   let myScore = 10;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASD Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: lightblue;
+        }
+        #game-area {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-size: cover;
+        }
+        .character, .enemy, .goal {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+        .character {
+            background: green;
+        }
+        .enemy {
+            background: red;
+        }
+        .goal {
+            background: gold;
+        }
+    </style>
+    <script>
+        let player, enemies, goal, level = 1, score = 10;
 
-   // global functions here
-   function myHitOther(my1, my2) {
-      left1 = parseInt(document.getElementById(my1).style.left);
-      right1 = left1 + parseInt(document.getElementById(my1).style.width);
-      top1 = parseInt(document.getElementById(my1).style.top);
-      bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
-      left2 = parseInt(document.getElementById(my2).style.left);
-      right2 = left2 + parseInt(document.getElementById(my2).style.width);
-      top2 = parseInt(document.getElementById(my2).style.top);
-      bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+        function initGame(level) {
+            const gameArea = document.getElementById('game-area');
+            gameArea.innerHTML = '';
 
-      if (
-         right1 >= left2 &&
-         bottom1 >= top2 &&
-         left1 <= right2 &&
-         top1 <= bottom2
-      ) {
-         return true;
-      }
-   }
+            // Create player
+            player = document.createElement('div');
+            player.id = 'player';
+            player.className = 'character';
+            player.style.left = '10px';
+            player.style.top = '10px';
+            gameArea.appendChild(player);
 
-   function myCheckHit() {
-      document.all.myText01.value = myScore; // show the present score
+            // Create enemies and goal based on level
+            enemies = [];
+            const layouts = [
+                // Level 1 enemies
+                [{ left: '300px', top: '200px' }, { left: '500px', top: '300px' }],
+                // Level 2 enemies
+                [{ left: '200px', top: '400px' }, { left: '400px', top: '100px' }, { left: '600px', top: '200px' }],
+                // Level 3 enemies
+                [{ left: '100px', top: '100px' }, { left: '300px', top: '300px' }, { left: '500px', top: '500px' }, { left: '700px', top: '400px' }]
+            ];
 
-      if (myHitOther("myImg01", "myImg02")) {
-         document.getElementById("myImg01").style.left = "20px";
-         document.all.myText01.value = "You hit myImg02";
-         myScore -= 1;
-      }
+            layouts[level - 1].forEach(pos => {
+                const enemy = document.createElement('div');
+                enemy.className = 'enemy';
+                enemy.style.left = pos.left;
+                enemy.style.top = pos.top;
+                gameArea.appendChild(enemy);
+                enemies.push(enemy);
+            });
 
-      if (myHitOther("myImg01", "myImg03")) {
-         document.getElementById("myImg01").style.left = "20px";
-         document.all.myText01.value = "You hit myImg03";
-         myScore -= 1;
-      }
+            // Create goal
+            goal = document.createElement('div');
+            goal.className = 'goal';
+            goal.style.left = '90vw';
+            goal.style.top = '90vh';
+            gameArea.appendChild(goal);
+        }
 
-      // you LOSE refresh the page
-      if (myScore <= 0) {
-         document.all.myText01.value = "You Lose score at zero!";
-         alert("Sorry you lose");
-         location.reload();
-      }
+        function movePlayer(dx, dy) {
+            const playerRect = player.getBoundingClientRect();
+            const gameRect = document.getElementById('game-area').getBoundingClientRect();
 
-      // YOU WIN and go to next level!
-      if (myHitOther("myImg01", "myImg04")) {
-         document.all.myText01.value =
-            "You hit myImg04 and you win the game!";
-         alert("You Win, now go to the next level");
-         document.getElementById("myImg01").style.left = "20px";
-         location = "https://www.google.ca";
-      }
+            let newX = player.offsetLeft + dx;
+            let newY = player.offsetTop + dy;
 
-      // more if statements here
-   }
-</script>
+            // Prevent going out of bounds
+            if (newX < 0) newX = 0;
+            if (newY < 0) newY = 0;
+            if (newX + playerRect.width > gameRect.width) newX = gameRect.width - playerRect.width;
+            if (newY + playerRect.height > gameRect.height) newY = gameRect.height - playerRect.height;
 
-<body
-   id="myBody"
-   style="background-repeat:repeat; background-size: 80%"
-   background="myBackground01.jpg"
-   onkeydown="{
-      document.all.myText01.value = event.key;
+            player.style.left = newX + 'px';
+            player.style.top = newY + 'px';
 
-      if (event.key == 'd') {  // d = go right
-         document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-      }
+            checkCollision();
+        }
 
-      if (event.key == 's') {  // s = go down
-         document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
-      }
+        function checkCollision() {
+            const playerRect = player.getBoundingClientRect();
 
-      if (event.key == 'a') {  // a = go left
-         document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 10 + 'px';
-      }
+            // Check collision with enemies
+            for (let enemy of enemies) {
+                const enemyRect = enemy.getBoundingClientRect();
+                if (
+                    playerRect.right > enemyRect.left &&
+                    playerRect.left < enemyRect.right &&
+                    playerRect.bottom > enemyRect.top &&
+                    playerRect.top < enemyRect.bottom
+                ) {
+                    alert('Hit an enemy! Restarting level.');
+                    initGame(level);
+                    return;
+                }
+            }
 
-      if (event.key == 'w') {  // w = go up
-         document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) - 10 + 'px';
-      }
+            // Check collision with goal
+            const goalRect = goal.getBoundingClientRect();
+            if (
+                playerRect.right > goalRect.left &&
+                playerRect.left < goalRect.right &&
+                playerRect.bottom > goalRect.top &&
+                playerRect.top < goalRect.bottom
+            ) {
+                if (level < 3) {
+                    alert('Level complete! Moving to the next level.');
+                    level++;
+                    initGame(level);
+                } else {
+                    alert('Congratulations! You completed all levels!');
+                    location.reload();
+                }
+            }
+        }
 
-      myCheckHit();  // checks for all collisions
-   }"
->
-   <h1 align="center"><font color="Yellow">T4A05 Template with WASD by Fred</font></h1>
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'w':
+                    movePlayer(0, -10);
+                    break;
+                case 'a':
+                    movePlayer(-10, 0);
+                    break;
+                case 's':
+                    movePlayer(0, 10);
+                    break;
+                case 'd':
+                    movePlayer(10, 0);
+                    break;
+            }
+        });
 
-   <input id="myText01" type="text" value="" size="50" placeholder="Feedback here"><br>
-
-   <input type="button" value="Auto Background Left" onclick="{
-      clearInterval(myClock);
-      let myTemp = '100px 0px';
-      myClock = setInterval(function() {
-         myGlobalX -= 5;
-         myTemp = myGlobalX + 'px 0px';
-         document.getElementById('myBody').style.backgroundPosition = myTemp;
-      }, 100);
-   }">
-
-   <input type="button" value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-      document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-      myCheckHit();  // checks for all collisions
-   }">
-
-   <input type="button" value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
-      myCheckHit();  // checks for all collisions
-   }"><br><br>
-
-   <img id="myImg01" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left: 50px; top:190px;">
-   <img id="myImg02" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:350px; top:190px;">
-   <img id="myImg03" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:500px; top:190px;">
-   <img id="myImg04" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:500px; top:400px;">
+        window.onload = () => initGame(level);
+    </script>
+</head>
+<body>
+    <div id="game-area"></div>
 </body>
+</html>
